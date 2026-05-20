@@ -1,18 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
-  
-  
-  <servers>
-     
-  </servers>
-
-  
-  <profiles>
-    
-  </profiles>
-
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<servers>
+		<server>
+			<id>anypoint-exchange-v3</id>
+			<username>supernikola</username>
+			<password>{lHKRwP0udU8HPrXyecxAcABHXkUINMYNipcF4ceagipK8HscYG+ZdcyM+wKqzJ+k}</password>
+		</server>
+	</servers>
+	<profiles>
+		<profile>
+			<id>Mule</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<anypoint.client_id>8d9283ffdbd54f11889a7377cd85411f</anypoint.client_id>
+				<anypoint.client_secret>1c55F659cC43427DA941046A3eE72267</anypoint.client_secret>
+			</properties>
+			<repositories>
+				<repository>
+					<id>anypoint-exchange-v3</id>
+					<name>Anypoint Exchange V3</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+					<layout>default</layout>
+				</repository>
+				<repository>
+					<id>mulesoft-releases</id>
+					<name>MuleSoft Releases Repository</name>
+					<url>https://repository.mulesoft.org/nexus/repository/releases/</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>Mule</activeProfile>
+	</activeProfiles>
 </settings>
