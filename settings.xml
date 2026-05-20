@@ -4,7 +4,12 @@
 		<server>
 			<id>anypoint-exchange-v3</id>
 			<username>supernikola</username>
-			<password>{lHKRwP0udU8HPrXyecxAcABHXkUINMYNipcF4ceagipK8HscYG+ZdcyM+wKqzJ+k}</password>
+			<password>Nikolamilica123.</password>
+		</server>
+		<server>
+			<id>mc-deployer</id>
+			<username>~~Client~~</username>
+			<password>D313CC30E6d34eAbB0ab5F080654105F</password>
 		</server>
 	</servers>
 	<profiles>
@@ -21,8 +26,7 @@
 				<repository>
 					<id>anypoint-exchange-v3</id>
 					<name>Anypoint Exchange V3</name>
-					<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
-					<layout>default</layout>
+					<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/maven</url> <layout>default</layout>
 				</repository>
 				<repository>
 					<id>mulesoft-releases</id>
