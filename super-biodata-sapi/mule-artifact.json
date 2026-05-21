@@ -1,3 +1,15 @@
 {
-  "minMuleVersion": "4.4.0"
+  "minMuleVersion": "4.6.0",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedResources": [],
+      "sharedLibraries": [
+        {
+          "groupId": "org.mongodb",
+          "artifactId": "mongodb-driver-legacy"
+        }
+      ]
+    }
+  }
 }
