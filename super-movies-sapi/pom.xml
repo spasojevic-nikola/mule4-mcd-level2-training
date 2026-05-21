@@ -15,15 +15,14 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- ALIGN ALL VERSIONS -->
-		<app.runtime>4.5.0</app.runtime>
-		<muleVersion>4.5.0</muleVersion>
+		<app.runtime>4.6.30</app.runtime>
+		<muleVersion>4.6.30:5-java17</muleVersion>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 
 		<!-- CloudHub -->
 		<environment>Training</environment>
-		<chTarget>Shared Space</chTarget>
-		<appName>ch2-deployment-super-movies-sapi-training</appName>
-
+		<chTarget>Cloudhub-EU-Central-1</chTarget>
+		<appName>ch2-super-movies-sapi-training</appName>
 	</properties>
 
 	<build>
@@ -32,7 +31,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.2.0</version>
 			</plugin>
 
 			<plugin>
@@ -43,16 +42,17 @@
 
 				<configuration>
 					<cloudhub2Deployment>
-						<uri>https://anypoint.mulesoft.com</uri>
+						<uri>https://eu1.anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
 						<environment>${environment}</environment>
 						<target>${chTarget}</target>
 						<muleVersion>${muleVersion}</muleVersion>
 						<server>mc-deployer</server>
 						<applicationName>${appName}</applicationName>
+						<businessGroupId>${project.groupId}</businessGroupId>
 
 						<replicas>1</replicas>
-						<vCores>0.1</vCores>
+						<vCores>0.2</vCores>
 
 						<deploymentSettings>
 							<http>
@@ -64,12 +64,12 @@
 						</deploymentSettings>
 
 						<properties>
-							<mule.env>Training</mule.env>
+							<mule.env>${environment}</mule.env>
+							
+							<anypoint.platform.client_id>bdf6501a61ae49b697ef95baf57fd592</anypoint.platform.client_id>
+						    <anypoint.platform.client_secret>58f520745f4C434ea9942F8F7F72ea1E</anypoint.platform.client_secret>
+						    <anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
 						</properties>
-
-						<secureProperties>
-							<mule.key>secure-properties-password</mule.key>
-						</secureProperties>
 
 					</cloudhub2Deployment>
 				</configuration>
@@ -79,12 +79,6 @@
 	</build>
 
 	<dependencies>
-
-		<!-- HTTP -->
-
-		<!-- Sockets -->
-
-		<!-- APIKIT -->
 
 		<!-- RAML (Exchange dependency) -->
 		<dependency>

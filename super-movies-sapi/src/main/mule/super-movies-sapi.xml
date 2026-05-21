@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<!-- REPLACE with your Anypoint platform ORGANIZATION ID -->
 	<apikit:config
 		name="super-movies-sapi-config"
-		api="resource::fc36a49f-6b89-4685-9653-b89a2824bbc5:super-movies-sapi:1.0.0:raml:zip:super-movies-sapi.raml"
+		api="resource::fc36a49f-6b89-4685-9653-b89a2824bbc5:super-movies-sapi:1.0.2:raml:zip:super-movies-sapi.raml"
 		outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
 
