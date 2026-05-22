@@ -1,0 +1,66 @@
+swagger: '2.0'
+info:
+  title: Super Ticket PAPI
+  description: Super Ticket PAPI allows you to check the movie ticket details and additional it also gives the details of the main character.
+  version: v1
+host: training-super-ticket-papi-nikola.us-e2.cloudhub.io
+basePath: /api/v1
+schemes:
+  - https
+paths:
+  /tickets/{BID}:
+    x-amf-description: Checks the passenger in with given number of bags
+    get:
+      parameters:
+        - name: BID
+          description: Unique Booking ID
+          required: true
+          in: path
+          type: string
+        - name: CID
+          description: Unique Character ID
+          required: false
+          in: query
+          type: string
+      responses:
+        '200':
+          description: If the BID is correct, returns ticket booking details and based on CID a mashed response from the Super Bio SAPI, Super Movies SAPI for the character data will be returned.
+          x-amf-mediaType: application/json
+          schema:
+            $ref: "#/definitions/TicketCharacterData"
+        '400':
+          description: '---'
+          x-amf-mediaType: application/json
+          schema:
+            example:
+              message: Invalid Booking ID.
+
+definitions:
+  TicketCharacterData:
+    description: Response contains Movie Ticket details for a linked via BID.
+    example:
+      ticket:
+        booking_id: BID7890
+        film_name: Avengers - Infinity War
+        cinema_name: Acme IMAX
+        screen_name: Audi 7
+        seats: RR - H4
+        imdb_rating: 8.9
+        language: English
+        date_time: Tue, 08 Feb, 2022 | 04:26 PM
+      character:
+        id: MARVEL0002
+        name: Thanos
+        birthplace: Titan
+        publisher: Marvel Comics
+        movies:
+          - name: Avengers Endgame,
+            year: 2019
+          - name: Guardians of the Galaxy
+            year: 2014
+    type: object
+    additionalProperties: true
+    properties:
+      date_time:
+         description: Movie date and time in IST timezone
+         type: string
