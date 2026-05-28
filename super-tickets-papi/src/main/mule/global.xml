@@ -13,6 +13,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
 
+	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml fajla, zbog prioriteta -->
+	<configuration-properties doc:name="Configuration properties" doc:id="f8b7e54f-7f63-49bf-b1f5-3320a6332704" file="properties-${env}.yaml" />
 	<configuration-properties doc:name="Configuration properties" doc:id="7e921518-6a24-4d2d-99df-ba7ab6de63f7" file="properties.yaml" />
 
 	<http:listener-config name="apiHttpListenerConfig">

@@ -1,0 +1,11 @@
+# Ideally speaking, each environment has its own certificates: 
+tls:
+  keystore:
+      type: "pkcs12"
+      path: "certs/super-tickets-papi.p12"
+      alias: "mule-server"
+      keyPassword: "superSecretPassword"
+      password: "superSecretPassword"
+      
+api: 
+  id: '2753803'
