@@ -25,7 +25,7 @@
 		<!-- CloudHub -->
 		<environment>DEV</environment>
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
-		<appName>ch2-super-movies-sapi-dev</appName>	
+		<appName>ch2-super-tickets-papi-dev</appName>	
 	</properties>
 
 	<build>
