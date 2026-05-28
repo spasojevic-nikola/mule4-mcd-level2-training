@@ -13,20 +13,22 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
 
+	<configuration-properties doc:name="Configuration properties" doc:id="7e921518-6a24-4d2d-99df-ba7ab6de63f7" file="properties.yaml" />
+
 	<http:listener-config name="apiHttpListenerConfig">
 		<http:listener-connection
 			host="0.0.0.0"
-			port="8082"
+			port="${api.port}"
 			protocol="HTTPS"
 			tlsContext="apiTlsContext" />
 	</http:listener-config>
 	<apikit:config
 		name="apiConfig"
-		api="resource::fc36a49f-6b89-4685-9653-b89a2824bbc5:super-tickets-papi:1.0.0:oas:zip:super-ticket-papi.yaml"
+		api="${api.specification}"
 		outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
 	<api-gateway:autodiscovery
-		apiId="2753803"
+		apiId="${api.id}"
 		ignoreBasePath="true"
 		doc:name="API Autodiscovery"
 		doc:id="57645b3a-f87e-49ed-b31d-a020889b355b"
@@ -36,13 +38,12 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		doc:name="TLS Context"
 		doc:id="0b3f8c9e-fe60-465e-9a83-9c56d8f0ccbf">
 		<tls:key-store
-			type="pkcs12"
-			path="certs/super-tickets-papi.p12"
-			alias="mule-server"
-			keyPassword="superSecretPassword"
-			password="superSecretPassword" />
+			type="${tls.keystore.type}"
+			path="${tls.keystore.path}"
+			alias="${tls.keystore.alias}"
+			keyPassword="${tls.keystore.keyPassword}"
+			password="${tls.keystore.password}" />
 	</tls:context>
-    	
 	
 	
 </mule>
