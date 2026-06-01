@@ -50,12 +50,12 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<configuration-properties
 		doc:name="Configuration properties"
 		doc:id="ef44845e-0cf3-4ad4-96dd-6d1eb5769156"
-		file="properties-${mule.env}.yaml" />
+		file="properties-${env}.yaml" />
 	<secure-properties:config
 		name="securePropertiesConfig"
 		doc:name="Secure Properties Config"
 		doc:id="32b3dd11-63f9-413e-9ea3-7fc481f22866"
-		file="properties-${mule.env}-secure.yaml"
+		file="properties-${env}-secure.yaml"
 		key="${secure.key}">
 		<secure-properties:encrypt
 			algorithm="Blowfish" />

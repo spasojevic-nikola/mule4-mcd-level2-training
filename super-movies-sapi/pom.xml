@@ -64,7 +64,7 @@
 						</deploymentSettings>
 
 						<properties>
-							<mule.env>${environment}</mule.env>
+							<env>${environment}</env>
 							
 							<anypoint.platform.client_id>bdf6501a61ae49b697ef95baf57fd592</anypoint.platform.client_id>
 						    <anypoint.platform.client_secret>58f520745f4C434ea9942F8F7F72ea1E</anypoint.platform.client_secret>
