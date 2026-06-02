@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<flow name="api-main">
 		<http:listener
 			config-ref="apiHttpListenerConfig"
-			path="/api/${api.majorVersion}/*">
+			path="/api/${api.majorVersion}/*"> 
 			<http:response
 				statusCode="#[vars.httpStatus default 200]">
 				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
@@ -27,40 +27,39 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<apikit:router config-ref="apiConfig" />
 		<error-handler ref="api-error-handler" />
 	</flow>
+	
 	<flow name="api-console">
 		<http:listener
 			config-ref="apiHttpListenerConfig"
 			path="/console/${api.majorVersion}/*">
 			<http:response
 				statusCode="#[vars.httpStatus default 200]">
-				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]>
-                </http:headers>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
 			</http:response>
 			<http:error-response
 				statusCode="#[vars.httpStatus default 500]">
 				<http:body><![CDATA[#[payload]]]></http:body>
-				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]>
-                </http:headers>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
 			</http:error-response>
 		</http:listener>
 		<apikit:console config-ref="apiConfig" />
 		<error-handler ref="api-console-error-handler" />
 	</flow>
+	
 	<flow name="get:\tickets\(BID):apiConfig">
 		<ee:transform doc:name="Transform Message">
 			<ee:variables>
-				<ee:set-variable variableName="BID">attributes.uriParams.'BID'
-				</ee:set-variable>
+				<ee:set-variable variableName="BID">attributes.uriParams.'BID'</ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<flow-ref
 			doc:name="get-tickets-data-by-bid"
-			doc:id="1bccee86-a34e-44c8-9730-145b01684124"
+			doc:id="299cc030-4576-4a6c-8fe9-c2139add546f"
 			name="get-tickets-data-by-bid" />
 		<logger
 			level="INFO"
 			doc:name="Logger"
-			doc:id="83f6feb4-9a1f-4eac-8b4a-267c7ae71361"
+			doc:id="12555d8a-0276-4120-8ea9-d3def0715197"
 			message="Flow End" />
 	</flow>
 </mule>

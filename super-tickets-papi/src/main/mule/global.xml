@@ -15,12 +15,31 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 
+	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml 
+		fajla, zbog prioriteta -->
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="6c601e74-08ca-4de3-bace-5e9059ea6885"
+		file="properties-${env}.yaml" />
+	<secure-properties:config
+		name="securePropertiesConfig"
+		doc:name="Secure Properties Config"
+		doc:id="58ec295e-c99f-4bea-8d81-c2887a505565"
+		file="properties-${env}-secure.yaml"
+		key="${secure.key}">
+		<secure-properties:encrypt
+			algorithm="Blowfish" />
+	</secure-properties:config>
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="5f358154-45f0-489c-b6a5-eabb96c46bb5"
+		file="properties.yaml" />
+
 	<http:listener-config name="apiHttpListenerConfig">
 		<http:listener-connection
 			host="0.0.0.0"
-			port="${api.port}"
-			protocol="HTTPS"
-			tlsContext="apiTlsContext" />
+			port="${api.port}"  
+			protocol="HTTP" />
 	</http:listener-config>
 	<apikit:config
 		name="apiConfig"
@@ -44,25 +63,4 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			keyPassword="${secure::tls.keystore.keyPassword}"
 			password="${secure::tls.keystore.password}" />
 	</tls:context>
-	
-	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml 
-		fajla, zbog prioriteta -->
-	<configuration-properties
-		doc:name="Configuration properties"
-		doc:id="ef44845e-0cf3-4ad4-96dd-6d1eb5769156"
-		file="properties-${env}.yaml" />
-	<secure-properties:config
-		name="securePropertiesConfig"
-		doc:name="Secure Properties Config"
-		doc:id="32b3dd11-63f9-413e-9ea3-7fc481f22866"
-		file="properties-${env}-secure.yaml"
-		key="${secure.key}">
-		<secure-properties:encrypt
-			algorithm="Blowfish" />
-	</secure-properties:config>
-	<configuration-properties
-		doc:name="Configuration properties"
-		doc:id="7bc426cd-b96a-4850-a776-5601fcd1e305"
-		file="properties.yaml" />
-	
 </mule>
