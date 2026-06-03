@@ -24,10 +24,37 @@
 		<environment>PROD</environment>
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
 		<appName>ch2-super-tickets-papi-prod</appName>
+		
+		<!--  Maven coordinates -->
+		<api.groupId>fc36a49f-6b89-4685-9653-b89a2824bbc5</api.groupId>
+		<api.artifactId>super-tickets-papi</api.artifactId>
+		<api.version>1.0.0</api.version>
 	</properties>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<resources>
+						<resource>
+							<directory>src/main/resources</directory>
+							<filtering>false</filtering>
+						</resource>
+						<resource>
+							<directory>src/main/resources</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>properties.yaml</include>
+							</includes>
+						</resource>
+					</resources>
+					<!--  <non FilteredFileExtensions> <nonFilteredFileExtension>.yaml</nonFilteredFileExtension>
+					</nonFilteredFileExtensions> -->
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -77,9 +104,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>fc36a49f-6b89-4685-9653-b89a2824bbc5</groupId>
-			<artifactId>super-tickets-papi</artifactId>
-			<version>1.0.0</version>
+			<groupId>${api.groupId}</groupId>
+			<artifactId>${api.artifactId}</artifactId>
+			<version>${api.version}</version>
 			<classifier>oas</classifier>
 			<type>zip</type>
 		</dependency>
