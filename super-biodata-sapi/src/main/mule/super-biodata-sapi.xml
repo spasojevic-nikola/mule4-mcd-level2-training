@@ -20,12 +20,12 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
     <!-- REPLACE with your Anypoint platform ORGANIZATION ID -->
     <apikit:config
 		name="super-biodata-sapi-config"
-		api="resource::fc36a49f-6b89-4685-9653-b89a2824bbc5:super-biodata-sapi:1.0.0:raml:zip:super-biodata-sapi.raml"
+		api="resource::326bc611-129e-442f-9497-edcad1cc83f8:super-biodata-sapi:1.0.0:raml:zip:super-biodata-sapi.raml"
 		outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
 
         <!-- REPLACE THE API-iID -->
-    <api-gateway:autodiscovery apiId="2740412" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="db392d85-313f-4bf4-9f49-f7205a987793" flowRef="super-biodata-sapi-main" />
+    <api-gateway:autodiscovery apiId="2775625" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="db392d85-313f-4bf4-9f49-f7205a987793" flowRef="super-biodata-sapi-main" />
     
 	<mongo:config
 		name="MongoDB_Config"

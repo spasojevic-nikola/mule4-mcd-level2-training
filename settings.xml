@@ -3,12 +3,12 @@
 	<servers>
 		<server>
 			<id>anypoint-exchange-v3</id>
-			<username>supernikola</username>
+			<username>supernikola1</username>
 			<password>Nikolamilica123.</password>
 		</server>
 		<server>
 			<id>mc-deployer</id>
-			<username>supernikola</username>
+			<username>supernikola1</username>
 			<password>Nikolamilica123.</password>
 		</server>
 	</servers>
@@ -19,8 +19,8 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<anypoint.client_id>8d9283ffdbd54f11889a7377cd85411f</anypoint.client_id>
-				<anypoint.client_secret>1c55F659cC43427DA941046A3eE72267</anypoint.client_secret>
+				<anypoint.client_id>7d3f98314ca8401bae31000bdd8759aa</anypoint.client_id>
+				<anypoint.client_secret>8Edb06d686464F29BFCf168F57Abc98E</anypoint.client_secret>
 			</properties>
 			<repositories>
 				<repository>

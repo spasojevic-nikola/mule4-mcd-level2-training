@@ -3,26 +3,24 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>fc36a49f-6b89-4685-9653-b89a2824bbc5</groupId>
+	<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 	<artifactId>super-movies-sapi-nikola</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>super-movies-sapi</name>
+	<name>super-movies-sapi-nikola</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<!-- ALIGN ALL VERSIONS -->
 		<app.runtime>4.6.30</app.runtime>
 		<muleVersion>4.6.30:5-java17</muleVersion>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 
-		<!-- CloudHub -->
-		<environment>Training</environment>
+		<environment>${env}</environment> 
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
-		<appName>ch2-super-movies-sapi-training</appName>
+		<appName>ch2-super-movies-sapi-${env}</appName>
 	</properties>
 
 	<build>
@@ -66,8 +64,8 @@
 						<properties>
 							<env>${environment}</env>
 							
-							<anypoint.platform.client_id>bdf6501a61ae49b697ef95baf57fd592</anypoint.platform.client_id>
-						    <anypoint.platform.client_secret>58f520745f4C434ea9942F8F7F72ea1E</anypoint.platform.client_secret>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+						    <anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
 						    <anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
 						</properties>
 
@@ -80,16 +78,14 @@
 
 	<dependencies>
 
-		<!-- RAML (Exchange dependency) -->
 		<dependency>
-			<groupId>fc36a49f-6b89-4685-9653-b89a2824bbc5</groupId>
+			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 			<artifactId>super-movies-sapi</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.1</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>
 
-		<!-- FIX for Log4j async issues in Maven/Exchange -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
