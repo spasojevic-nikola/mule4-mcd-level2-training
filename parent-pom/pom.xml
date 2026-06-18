@@ -84,7 +84,10 @@
 								<anypoint.platform.client_id>${anypoint.client_id}</anypoint.platform.client_id>
 								<anypoint.platform.client_secret>${anypoint.client_secret}</anypoint.platform.client_secret>
 								<anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
-								<secure.key>${secure.key}</secure.key>
+								<secure.key>${secure.key}</secure.key>	
+								<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
+								<anypoint.platform.visualizer.displayName>${project.artifactId}</anypoint.platform.visualizer.displayName>
+								<anypoint.platform.visualizer.layer>${api.visualizer.layer}</anypoint.platform.visualizer.layer>
 							</properties>
 						</cloudhub2Deployment>
 					</configuration>
