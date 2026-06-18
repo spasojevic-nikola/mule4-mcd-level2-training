@@ -11,6 +11,11 @@
 			<username>supernikola1</username>
 			<password>Nikolamilica123.</password>
 		</server>
+		<server>
+			<id>Super-Organization-App</id>
+			<username>~~~Client~~~</username>
+			<password>ac1557630b984300ab01acc67e201ef4~?~1c8E02b40D564C6A8207811e915e5E84</password>
+		</server>
 	</servers>
 	<profiles>
 		<profile>
@@ -24,9 +29,16 @@
 			</properties>
 			<repositories>
 				<repository>
-					<id>anypoint-exchange-v3</id>
+					<id>Super-Organization-App</id>
 					<name>Anypoint Exchange V3</name>
-					<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/maven</url> <layout>default</layout>
+					<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/326bc611-129e-442f-9497-edcad1cc83f8/maven</url> 
+					<layout>default</layout>
+				</repository>
+				<repository>
+					<id>MuleRepository</id>
+					<name>MuleSoft Releases Repository</name>
+					<url>https://repository.mulesoft.org/releases/</url>
+					<layout>default</layout>
 				</repository>
 				<repository>
 					<id>mulesoft-releases</id>
