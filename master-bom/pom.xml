@@ -24,6 +24,8 @@
 		<sockets.connector.version>1.2.7</sockets.connector.version>
 		<apikit.version>1.11.17</apikit.version>
 		<secure.properties.version>1.2.7</secure.properties.version>
+		<super.biodata.version>1.0.0</super.biodata.version>
+		<super.movies.version>1.0.1</super.movies.version>
 	</properties>
 
 	<build>
@@ -106,6 +108,18 @@
 				<groupId>com.mulesoft.modules</groupId>
 				<artifactId>mule-secure-configuration-property-module</artifactId>
 				<version>${secure.properties.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+				<artifactId>mule-plugin-super-biodata-sapi</artifactId>
+				<version>${super.biodata.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+				<artifactId>mule-plugin-super-movies-sapi</artifactId>
+				<version>${super.movies.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>

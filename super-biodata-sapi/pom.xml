@@ -55,10 +55,10 @@
 							</http>
 						</deploymentSettings>
 						<properties>
-						    <env>${environment}</env>
-						    <anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
-						    <anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
-						    <anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
+							<env>${environment}</env>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
 						</properties>
 					</cloudhub2Deployment>
 					<sharedLibraries>
@@ -110,6 +110,12 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-legacy</artifactId>
 			<version>3.12.14</version>
+		</dependency>
+		<dependency>
+			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+			<artifactId>mule-plugin-super-biodata-sapi</artifactId>
+			<version>1.0.0</version>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
 	<parent>
 		<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 		<artifactId>parent-pom</artifactId>
@@ -17,16 +16,13 @@
 	<properties>
 		<environment>${env}</environment>
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
-		
 		<appName>ch2-super-tickets-papi-${env}</appName>
-		
 		<api.groupId>326bc611-129e-442f-9497-edcad1cc83f8</api.groupId>
 		<api.artifactId>super-tickets-papi</api.artifactId>
 		<api.version>1.0.0</api.version>
 
 		<anypoint.client_id>${anypoint.platform.client_id}</anypoint.client_id>
 		<anypoint.client_secret>${anypoint.platform.client_secret}</anypoint.client_secret>
-		
 		<api.visualizer.layer>Process</api.visualizer.layer>
 	</properties>
 
@@ -40,7 +36,7 @@
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
 				<extensions>true</extensions>
-				</plugin>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -70,6 +66,17 @@
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+			<artifactId>mule-plugin-super-biodata-sapi</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+			<artifactId>mule-plugin-super-movies-sapi</artifactId>
+			<version>1.0.1</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
