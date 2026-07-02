@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 		<artifactId>master-bom</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../master-bom/pom.xml</relativePath>
 	</parent>
-
 	<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 	<artifactId>parent-pom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>parent-pom</name>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-		<app.runtime>4.6.30</app.runtime>
-		<muleVersion>4.6.30:5-java17</muleVersion>
-		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
-	</properties>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -55,7 +42,6 @@
 					<groupId>org.mule.tools.maven</groupId>
 					<artifactId>mule-maven-plugin</artifactId>
 					<extensions>true</extensions>
-
 					<configuration>
 						<cloudhub2Deployment>
 							<uri>https://eu1.anypoint.mulesoft.com</uri>
@@ -66,10 +52,8 @@
 							<server>mc-deployer</server>
 							<applicationName>${appName}</applicationName>
 							<businessGroupId>326bc611-129e-442f-9497-edcad1cc83f8</businessGroupId>
-
 							<replicas>1</replicas>
 							<vCores>0.1</vCores>
-
 							<deploymentSettings>
 								<http>
 									<inbound>
@@ -78,13 +62,12 @@
 									</inbound>
 								</http>
 							</deploymentSettings>
-
 							<properties>
 								<env>${environment}</env>
 								<anypoint.platform.client_id>${anypoint.client_id}</anypoint.platform.client_id>
 								<anypoint.platform.client_secret>${anypoint.client_secret}</anypoint.platform.client_secret>
 								<anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
-								<secure.key>${secure.key}</secure.key>	
+								<secure.key>${secure.key}</secure.key>
 								<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
 								<anypoint.platform.visualizer.displayName>${project.artifactId}</anypoint.platform.visualizer.displayName>
 								<anypoint.platform.visualizer.layer>${api.visualizer.layer}</anypoint.platform.visualizer.layer>
@@ -95,13 +78,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
-	<distributionManagement>
-		<repository>
-			<id>anypoint-exchange-v3</id>
-			<name>Corporate Repository</name>
-			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
-			<layout>default</layout>
-		</repository>
-	</distributionManagement>
 </project>

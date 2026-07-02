@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
-	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
-	xmlns:os="http://www.mulesoft.org/schema/mule/os"
-	xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
-http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
-http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
-http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd"
->
+    xmlns="http://www.mulesoft.org/schema/mule/core"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:http="http://www.mulesoft.org/schema/mule/http"
+    xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+    xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
+    xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+    xmlns:os="http://www.mulesoft.org/schema/mule/os"
+
+    xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
+        http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+        http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	
 	<http:listener-config
 		name="booking-oauth-api-httpListenerConfig"
 	>
@@ -25,14 +30,14 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<os:object-store
 		name="client_object_store"
 		doc:name="Object store"
-		doc:id="2b0df579-b916-4ed2-81f5-277dbb7f7b8f" />
+		doc:id="4878bc10-ca6d-46b5-8114-302e97a4b413" />
 	<os:object-store
 		name="Object_store"
 		doc:name="Object store"
-		doc:id="2e3d1540-dfac-471e-b150-7a907cf8741b" />
-	<api-gateway:autodiscovery apiId="19646157" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="fc75732a-a63b-4595-8c8c-47a8234305e2" flowRef="get:\booking\BID7890" />
+		doc:id="e55cadff-4c05-4584-9904-2edc922ada0f" />
+	<api-gateway:autodiscovery apiId="2788373" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="b940f3c8-d429-4181-97fe-a909c307460c" flowRef="get:\booking\BID7890" />
 	<flow name="get:\booking\BID7890">
-		<http:listener doc:name="Listener" doc:id="3ed3736e-09fd-47a1-b697-3a686be0957d" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/BID7890"/>
+		<http:listener doc:name="Listener" doc:id="637770c6-b2af-46a0-ba62-1dcd39bd4a9a" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/BID7890"/>
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -84,7 +89,7 @@ output application/json
 		</ee:transform>
 	</flow>
 	<flow name="get:\booking\live">
-		<http:listener doc:name="Listener" doc:id="5e790b99-e992-4bf4-b1db-d74ac5dcc28a" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/live"/>
+		<http:listener doc:name="Listener" doc:id="57478a6c-b736-4df8-83a1-5e9550ad84e8" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/live"/>
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -97,16 +102,16 @@ output application/json
 	<flow
 		name="post:\booking\register"
 	>
-		<http:listener doc:name="Listener" doc:id="730c5a77-0450-4cd1-ac0c-124599c67691" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/register"/>
+		<http:listener doc:name="Listener" doc:id="2af997f5-93bd-47c5-8b88-69ea0360e8d6" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/register"/>
 		<set-payload
 			value='#["Callback URL Registered - " ++ payload.callBackURL as String]'
 			doc:name="Set Payload"
-			doc:id="13694b4c-eb0c-4a3d-939b-dd8945290664" />
+			doc:id="53fa7112-f9d1-43d9-b75c-5cb4b59af9b3" />
 	</flow>
 	<oauth2-provider:config
 		name="OAuth2_Provider_Config"
 		doc:name="OAuth2 Provider Config"
-		doc:id="7b4d75d1-3f96-4bac-a7c1-eaedd95b9dfb"
+		doc:id="aa11c685-acdb-4366-aa0e-1ccf5e23186f"
 		listenerConfig="booking-oauth-api-httpListenerConfig"
 		clientStore="client_object_store"
 		supportedGrantTypes="CLIENT_CREDENTIALS"
@@ -116,11 +121,11 @@ output application/json
 	</oauth2-provider:config>
 	<flow
 		name="AutoCreate-Oauth-Client-Flow"
-		doc:id="303a7c1b-228c-4d6e-af54-5e883f771196"
+		doc:id="2f01ddaf-55ca-4f29-9d91-fca0512464d8"
 	>
 		<scheduler
 			doc:name="Scheduler"
-			doc:id="93a77827-f1cf-4c66-9394-53d478b0ec90"
+			doc:id="3b520509-141f-4506-90cc-c96fab1d923d"
 		>
 			<scheduling-strategy>
 				<fixed-frequency
@@ -131,7 +136,7 @@ output application/json
 		<http:request
 			method="GET"
 			doc:name="Request"
-			doc:id="4dbdc790-e63a-4d3e-91c2-75b755a0225a"
+			doc:id="a3dfedd2-75ca-43c6-a9b3-df4d771765d2"
 			url="http://localhost:8081/createclient"
 		>
 			<http:headers><![CDATA[#[output application/java
@@ -145,21 +150,21 @@ output application/json
 		<logger
 			level="INFO"
 			doc:name="Logger"
-			doc:id="2211bf37-ba8b-4c1b-a5da-339355e964f2"
+			doc:id="7a15b3c9-d6c8-438f-a861-830a762ee34c"
 			message='#[payload]' />
 	</flow>
 	<flow
 		name="createClient"
-		doc:id="943f515d-7b5c-4dbd-ae35-3534f4478868"
+		doc:id="e56bbf1d-57ac-4b69-9f9d-269994ad72fc"
 	>
 		<http:listener
 			doc:name="Listener"
-			doc:id="07b90694-f5cf-416c-9c4b-3534476f2911"
+			doc:id="602a7cea-c356-4667-ba63-0c1bd3e489b2"
 			config-ref="booking-oauth-api-httpListenerConfig"
 			path="/createclient" />
 		<oauth2-provider:create-client
 			doc:name="Create client"
-			doc:id="982496f6-d7e2-49fa-86d5-917604472bc6"
+			doc:id="1a379cdb-2182-45de-828e-b00cbd2c4e98"
 			config-ref="OAuth2_Provider_Config"
 			clientId="#[attributes.headers.client_id]"
 			type='CONFIDENTIAL'
@@ -174,29 +179,29 @@ output application/json
 		<logger
 			level="INFO"
 			doc:name="Logger"
-			doc:id="0fa2133c-8819-4830-a4db-b0d9edaaae48"
+			doc:id="2e77195f-5918-4e91-950c-278f99bc088a"
 			message="#[payload]" />
 		<set-payload
 			value="============================== Client Created Successfully =============================="
 			doc:name="Response"
-			doc:id="ffd81c17-ac2b-4724-83d9-0bca54fa50c3" />
+			doc:id="78dbd1fc-c5bf-489e-b821-39495c7a88ff" />
 	</flow>
 	<flow
 		name="validateToken"
-		doc:id="d9c74848-a497-4e89-9f40-d78c7025cf08"
+		doc:id="fde401de-f7bc-43b1-8ef2-a636a2cfcfae"
 	>
 		<http:listener
 			doc:name="Listener"
-			doc:id="fb1afa81-5994-4217-a4ef-e7124d12d60a"
+			doc:id="3329428e-eb3d-463d-9467-7da0fea6496a"
 			config-ref="booking-oauth-api-httpListenerConfig"
 			path="/validateToken" />
 		<oauth2-provider:validate-token
 			doc:name="Validate token"
-			doc:id="1d7e3ce1-3a71-460e-b8f6-1b33fc7daeed"
+			doc:id="0e319940-0b98-45f9-9b53-209458615660"
 			config-ref="OAuth2_Provider_Config" />
 		<set-payload
 			value="#[payload]"
 			doc:name="Set Payload"
-			doc:id="1f28eef9-3584-4a39-80ec-134d8d6c11ee" />
+			doc:id="b4b76067-abdf-4e59-9d6d-a5f8da284f6a" />
 	</flow>
 </mule>

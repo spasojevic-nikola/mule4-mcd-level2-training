@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 	<artifactId>master-bom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>master-bom</name>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 		<app.runtime>4.6.30</app.runtime>
 		<muleVersion>4.6.30:5-java17</muleVersion>
-		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
-
+		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
 		<maven.resources.version>3.3.1</maven.resources.version>
 		<maven.clean.version>3.2.0</maven.clean.version>
-
 		<http.connector.version>1.11.3</http.connector.version>
 		<sockets.connector.version>1.2.7</sockets.connector.version>
 		<apikit.version>1.11.17</apikit.version>
 		<secure.properties.version>1.2.7</secure.properties.version>
 		<super.biodata.version>1.0.0</super.biodata.version>
 		<super.movies.version>1.0.1</super.movies.version>
+		<!--za OAuth-->
+		<oauth.module.version>1.1.21</oauth.module.version>
+		<oauth.provider.version>1.0.13</oauth.provider.version>
+		<objectstore.connector.version>1.2.2</objectstore.connector.version>
+		<mule.http.connector.version>1.10.0</mule.http.connector.version>
+		<mule.sockets.connector.version>1.2.0</mule.sockets.connector.version>
+		<mule.oauth.module.version>1.1.1</mule.oauth.module.version>
+		<mule.objectstore.connector.version>1.2.3</mule.objectstore.connector.version>
+		<mule.oauth2.provider.version>1.3.6</mule.oauth2.provider.version>
 	</properties>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -46,44 +48,10 @@
 					<artifactId>mule-maven-plugin</artifactId>
 					<version>${mule.maven.plugin.version}</version>
 					<extensions>true</extensions>
-
-					<configuration>
-						<cloudhub2Deployment>
-							<uri>https://eu1.anypoint.mulesoft.com</uri>
-							<provider>MC</provider>
-							<environment>${environment}</environment>
-							<target>${chTarget}</target>
-							<muleVersion>${muleVersion}</muleVersion>
-							<server>mc-deployer</server>
-							<applicationName>${appName}</applicationName>
-							<businessGroupId>326bc611-129e-442f-9497-edcad1cc83f8</businessGroupId>
-
-							<replicas>1</replicas>
-							<vCores>0.1</vCores>
-
-							<deploymentSettings>
-								<http>
-									<inbound>
-										<forwardSslSession>false</forwardSslSession>
-										<lastMileSecurity>false</lastMileSecurity>
-									</inbound>
-								</http>
-							</deploymentSettings>
-
-							<properties>
-								<env>${environment}</env>
-								<anypoint.platform.client_id>${anypoint.client_id}</anypoint.platform.client_id>
-								<anypoint.platform.client_secret>${anypoint.client_secret}</anypoint.platform.client_secret>
-								<anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
-								<secure.key>${secure.key}</secure.key>
-							</properties>
-						</cloudhub2Deployment>
-					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -122,9 +90,27 @@
 				<version>${super.movies.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
+			<!--za OAuth-->
+			<dependency>
+				<groupId>org.mule.modules</groupId>
+				<artifactId>mule-oauth-module</artifactId>
+				<version>${oauth.module.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>com.mulesoft.modules</groupId>
+				<artifactId>mule-oauth2-provider-module</artifactId>
+				<version>${oauth.provider.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.mule.connectors</groupId>
+				<artifactId>mule-objectstore-connector</artifactId>
+				<version>${objectstore.connector.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<repositories>
 		<repository>
 			<id>Super-Organization-App</id>
@@ -145,7 +131,6 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
@@ -157,7 +142,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
 	<distributionManagement>
 		<repository>
 			<id>Super-Organization-App</id>
