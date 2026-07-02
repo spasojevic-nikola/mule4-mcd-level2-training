@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
+	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
+	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
 	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
 	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
 	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
@@ -13,7 +15,9 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
-http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
+http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd">
 
 	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml 
 		fajla, zbog prioriteta -->
@@ -38,7 +42,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	<http:listener-config name="apiHttpListenerConfig">
 		<http:listener-connection
 			host="0.0.0.0"
-			port="${http.port}"  
+			port="${http.port}"
 			protocol="HTTP" />
 	</http:listener-config>
 	<apikit:config
@@ -63,4 +67,22 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			keyPassword="${secure::tls.keystore.keyPassword}"
 			password="${secure::tls.keystore.password}" />
 	</tls:context>
+	<super-heros-movies-data-sapi:config
+		name="superHerosMoviesDataSAPIConfig"
+		doc:name="Super Heros Movies Data SAPI Config"
+		doc:id="e14bb385-6425-42b8-a39e-4bb01b6ca389"
+		property_host="ch2-super-movies-sapi-prod-jcrt7k.2ky31l-2.deu-c1.eu1.cloudhub.io"
+		property_port="443"
+		property_basePath="/api/v1"
+		property_protocol="HTTPS"
+		property_responseTimeout="4000" />
+	<super-heros-bio-data-sapi:config
+		name="superHerosBioDataSAPIConfig"
+		doc:name="Super Heros Bio Data SAPI Config"
+		doc:id="6e17ae0f-209a-4e92-b050-025bde9bb747"
+		property_host="ch2-super-biodata-sapi-prod-jcrt7k.2ky31l-2.deu-c1.eu1.cloudhub.io"
+		property_port="443"
+		property_basePath="/api/v1"
+		property_protocol="HTTPS"
+		property_responseTimeout="4000" />
 </mule>

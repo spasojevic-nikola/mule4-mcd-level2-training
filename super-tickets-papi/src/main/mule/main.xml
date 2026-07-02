@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule
+	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
+	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
+http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd">
 	<flow
 		name="get-tickets-data-by-bid"
 		doc:id="25901aa0-528f-43f5-9661-f83dd80737f2">
+		<logger level="INFO" doc:name="Log Correlation ID" doc:id="b10c4de9-4f91-421b-b79e-9c437e7c5de5" message="#['\n****************************************\n' ++ 'Flow started with correlation id - ' ++ correlationId ++ '\n****************************************\n']"/>
+		<super-heros-movies-data-sapi:get-movies-by-cid doc:name="Get Movies by CID" doc:id="7395a0cd-26c2-45a3-b97c-f7bcaa2cfae0" config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]" target="superMovies"/>
+		<super-heros-bio-data-sapi:get-biodata-by-cid doc:name="Get BioData by CID" doc:id="5e625b50-351b-46f9-9fe0-c8ce69f1e13e" config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" target="superBioData"/>
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0

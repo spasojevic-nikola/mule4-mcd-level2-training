@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:oauth2-provider="http://www.mulesoft.org/schema/mule/oauth2-provider"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+http://www.mulesoft.org/schema/mule/oauth2-provider http://www.mulesoft.org/schema/mule/oauth2-provider/current/mule-oauth2-provider.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd"
+>
+	<http:listener-config
+		name="booking-oauth-api-httpListenerConfig"
+	>
+		<http:listener-connection
+			host="0.0.0.0"
+			port="8081" />
+	</http:listener-config>
+	
+	<os:object-store
+		name="client_object_store"
+		doc:name="Object store"
+		doc:id="2b0df579-b916-4ed2-81f5-277dbb7f7b8f" />
+	<os:object-store
+		name="Object_store"
+		doc:name="Object store"
+		doc:id="2e3d1540-dfac-471e-b150-7a907cf8741b" />
+	<api-gateway:autodiscovery apiId="19646157" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="fc75732a-a63b-4595-8c8c-47a8234305e2" flowRef="get:\booking\BID7890" />
+	<flow name="get:\booking\BID7890">
+		<http:listener doc:name="Listener" doc:id="3ed3736e-09fd-47a1-b697-3a686be0957d" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/BID7890"/>
+		<ee:transform doc:name="Transform Message">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  booking_id: "BID7890",
+  cinema: {
+    cinema_id: 34458,
+    cinema_name: "Acme IMAX",
+    address: "Rd No. 67, Acme Circle",
+    city: "Hyderabad",
+    country: "India",
+    postcode: "500061",
+    screen_name: "Audi 7",
+    seats: "RR - H4"
+  },
+  film: {
+    film_name: "Avengers - Infinity War",
+    language: "English",
+    duration_mins: 175,
+    distributor_id: 427,
+    distributor: "Super International",
+    imdb_rating: 8.9,
+    comic: "MARVEL",
+    showing: [
+      {
+        date_time: "2022-10-08T13:55:00+05:30"
+      }
+    ]
+  },
+  user: {
+    name: "Sid",
+    mobile: "+91 98765 43210",
+    preferred_genre: [
+      "Sci-Fi", 
+      "Thriller"
+    ]
+  },
+  status: {
+    state: "OK",
+    method: "cinemaDetails",
+    message: null,
+    request_method: "GET",
+    version: "v200"
+  }
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="get:\booking\live">
+		<http:listener doc:name="Listener" doc:id="5e790b99-e992-4bf4-b1db-d74ac5dcc28a" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/live"/>
+		<ee:transform doc:name="Transform Message">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+"Live" as String {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow
+		name="post:\booking\register"
+	>
+		<http:listener doc:name="Listener" doc:id="730c5a77-0450-4cd1-ac0c-124599c67691" config-ref="booking-oauth-api-httpListenerConfig" path="/booking/register"/>
+		<set-payload
+			value='#["Callback URL Registered - " ++ payload.callBackURL as String]'
+			doc:name="Set Payload"
+			doc:id="13694b4c-eb0c-4a3d-939b-dd8945290664" />
+	</flow>
+	<oauth2-provider:config
+		name="OAuth2_Provider_Config"
+		doc:name="OAuth2 Provider Config"
+		doc:id="7b4d75d1-3f96-4bac-a7c1-eaedd95b9dfb"
+		listenerConfig="booking-oauth-api-httpListenerConfig"
+		clientStore="client_object_store"
+		supportedGrantTypes="CLIENT_CREDENTIALS"
+	>
+		<oauth2-provider:token-config
+			tokenStore="Object_store" />
+	</oauth2-provider:config>
+	<flow
+		name="AutoCreate-Oauth-Client-Flow"
+		doc:id="303a7c1b-228c-4d6e-af54-5e883f771196"
+	>
+		<scheduler
+			doc:name="Scheduler"
+			doc:id="93a77827-f1cf-4c66-9394-53d478b0ec90"
+		>
+			<scheduling-strategy>
+				<fixed-frequency
+					frequency="365"
+					timeUnit="DAYS" />
+			</scheduling-strategy>
+		</scheduler>
+		<http:request
+			method="GET"
+			doc:name="Request"
+			doc:id="4dbdc790-e63a-4d3e-91c2-75b755a0225a"
+			url="http://localhost:8081/createclient"
+		>
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	"client_secret" : "mcd-l2-client_secret",
+	"grant_type" : "client_credentials",
+	"client_id" : "mcd-l2-client_id"
+}]]]></http:headers>
+		</http:request>
+		<logger
+			level="INFO"
+			doc:name="Logger"
+			doc:id="2211bf37-ba8b-4c1b-a5da-339355e964f2"
+			message='#[payload]' />
+	</flow>
+	<flow
+		name="createClient"
+		doc:id="943f515d-7b5c-4dbd-ae35-3534f4478868"
+	>
+		<http:listener
+			doc:name="Listener"
+			doc:id="07b90694-f5cf-416c-9c4b-3534476f2911"
+			config-ref="booking-oauth-api-httpListenerConfig"
+			path="/createclient" />
+		<oauth2-provider:create-client
+			doc:name="Create client"
+			doc:id="982496f6-d7e2-49fa-86d5-917604472bc6"
+			config-ref="OAuth2_Provider_Config"
+			clientId="#[attributes.headers.client_id]"
+			type='CONFIDENTIAL'
+			secret="#[attributes.headers.client_secret]"
+			clientName="#[attributes.headers.client_name]"
+			redirectUris='#[["demo.com"]]'
+			authorizedGrantTypes='#[["CLIENT_CREDENTIALS"]]'
+			description='#[""]'
+			principal='#[""]'
+			scopes='#[[]]'
+			failIfPresent="true" />
+		<logger
+			level="INFO"
+			doc:name="Logger"
+			doc:id="0fa2133c-8819-4830-a4db-b0d9edaaae48"
+			message="#[payload]" />
+		<set-payload
+			value="============================== Client Created Successfully =============================="
+			doc:name="Response"
+			doc:id="ffd81c17-ac2b-4724-83d9-0bca54fa50c3" />
+	</flow>
+	<flow
+		name="validateToken"
+		doc:id="d9c74848-a497-4e89-9f40-d78c7025cf08"
+	>
+		<http:listener
+			doc:name="Listener"
+			doc:id="fb1afa81-5994-4217-a4ef-e7124d12d60a"
+			config-ref="booking-oauth-api-httpListenerConfig"
+			path="/validateToken" />
+		<oauth2-provider:validate-token
+			doc:name="Validate token"
+			doc:id="1d7e3ce1-3a71-460e-b8f6-1b33fc7daeed"
+			config-ref="OAuth2_Provider_Config" />
+		<set-payload
+			value="#[payload]"
+			doc:name="Set Payload"
+			doc:id="1f28eef9-3584-4a39-80ec-134d8d6c11ee" />
+	</flow>
+</mule>

@@ -76,7 +76,6 @@
 		<dependency>
 			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
 			<artifactId>mule-plugin-super-movies-sapi</artifactId>
-			<version>1.0.1</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
