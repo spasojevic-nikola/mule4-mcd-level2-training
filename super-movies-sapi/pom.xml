@@ -18,7 +18,7 @@
 		<muleVersion>4.6.30:5-java17</muleVersion>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
 
-		<environment>${env}</environment> 
+		<environment>${env}</environment>
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
 		<appName>ch2-super-movies-sapi-${env}</appName>
 	</properties>
@@ -63,10 +63,9 @@
 
 						<properties>
 							<env>${environment}</env>
-							
 							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
-						    <anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
-						    <anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.base_uri>https://eu1.anypoint.mulesoft.com/</anypoint.platform.base_uri>
 						</properties>
 
 					</cloudhub2Deployment>
@@ -108,6 +107,12 @@
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>
 			<version>1.11.3</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-oauth-module</artifactId>
+			<version>1.1.27</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
+	xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
 	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
 	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
 	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
@@ -8,16 +10,16 @@
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
-http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd">
+http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd">
 
 	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml 
 		fajla, zbog prioriteta -->
@@ -85,4 +87,14 @@ http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesof
 		property_basePath="/api/v1"
 		property_protocol="HTTPS"
 		property_responseTimeout="4000" />
+	<os:object-store name="oauthTokenObjectStore" doc:name="Object store" doc:id="41cab2e5-264e-4152-a32e-de6b9dd3a245" entryTtl="60" entryTtlUnit="MINUTES" expirationInterval="60" />
+	<http:request-config name="bookingsDataByBID" doc:name="HTTP Request configuration" doc:id="51e49c7c-c6e9-4910-bfcd-f37e06c6b9f2" basePath="/booking" >
+		<http:request-connection protocol="HTTPS" host="onlineman477-eval-prod.apigee.net" port="443" >
+			<http:authentication >
+				<oauth:client-credentials-grant-type clientId="KZ24TpHNeppVOmwtKpD6jQAjnq4vrLG1" clientSecret="CYBpVYhSeqSy4GSR" tokenUrl="https://onlineman477-eval-prod.apigee.net/owasp-oauth/token" >
+					<oauth:token-manager objectStore="oauthTokenObjectStore" />
+				</oauth:client-credentials-grant-type>
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
 </mule>

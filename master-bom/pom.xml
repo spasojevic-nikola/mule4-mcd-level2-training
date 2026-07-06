@@ -9,26 +9,32 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Runtime -->
 		<app.runtime>4.6.30</app.runtime>
 		<muleVersion>4.6.30:5-java17</muleVersion>
 		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
+
+		<!-- Maven plugins -->
 		<maven.resources.version>3.3.1</maven.resources.version>
 		<maven.clean.version>3.2.0</maven.clean.version>
+
+		<!-- Mule connectors -->
 		<http.connector.version>1.11.3</http.connector.version>
 		<sockets.connector.version>1.2.7</sockets.connector.version>
+		<objectstore.connector.version>1.3.0</objectstore.connector.version>
+
+		<!-- Mule modules -->
 		<apikit.version>1.11.17</apikit.version>
 		<secure.properties.version>1.2.7</secure.properties.version>
+
+		<!-- OAuth -->
+		<oauth.module.version>1.1.21</oauth.module.version>
+		<oauth.provider.version>1.3.6</oauth.provider.version>
+
+		<!-- Custom connectors -->
 		<super.biodata.version>1.0.0</super.biodata.version>
 		<super.movies.version>1.0.1</super.movies.version>
-		<!--za OAuth-->
-		<oauth.module.version>1.1.21</oauth.module.version>
-		<oauth.provider.version>1.0.13</oauth.provider.version>
-		<objectstore.connector.version>1.2.2</objectstore.connector.version>
-		<mule.http.connector.version>1.10.0</mule.http.connector.version>
-		<mule.sockets.connector.version>1.2.0</mule.sockets.connector.version>
-		<mule.oauth.module.version>1.1.1</mule.oauth.module.version>
-		<mule.objectstore.connector.version>1.2.3</mule.objectstore.connector.version>
-		<mule.oauth2.provider.version>1.3.6</mule.oauth2.provider.version>
 	</properties>
 	<build>
 		<pluginManagement>
