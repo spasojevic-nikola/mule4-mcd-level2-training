@@ -13,6 +13,35 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="get-biodata-by-cid" doc:id="f23e8bc8-6c49-42fc-ab8a-a7ca301aa38e" >
+		<super-heros-bio-data-sapi:get-biodata-by-cid doc:name="Get BioData by CID" doc:id="5e625b50-351b-46f9-9fe0-c8ce69f1e13e" config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" target="superBioData" />
+	</flow>
+	<flow name="get-movies-data-by-cid" doc:id="97d4793a-084a-4c5a-a5de-777086590188" >
+		<super-heros-movies-data-sapi:get-movies-by-cid doc:name="Get Movies by CID" doc:id="7395a0cd-26c2-45a3-b97c-f7bcaa2cfae0" config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]" target="superMovies" />
+	</flow>
+	<flow name="get-booking-data-by-bid" doc:id="c55221fc-768b-4046-a223-5b6d26a164e0" >
+		<http:request
+			method="GET"
+			doc:name="Get Booking Data using BID"
+			doc:id="a974cca3-1fcc-4496-83ec-6eacef5eb6a7"
+			config-ref="bookingsDataByBID"
+			path="/{bookingID}"
+			target="bookingData">
+			<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"bookingID" : vars.BID
+}]]]></http:uri-params>
+		</http:request>
+		<choice doc:name="Choice" doc:id="c29fdae0-c211-486c-aaa2-3b6d3aeb546d" >
+			<when expression="#[%dw 2.0&#10;import first from dw::core::Strings&#10;output application/java&#10;var bookingDataComicValue = vars.bookingData.film.comic first 2&#10;---&#10;vars.CID contains bookingDataComicValue]">
+				<logger level="INFO" doc:name="Request CID is from Marvel Comic" doc:id="0245ca46-437f-4f5d-9306-08178cb6db25" message="Request CID is from Marvel Comic"/>
+			</when>
+			<otherwise >
+				<raise-error doc:name="Request CID is NOT from Marvel Comic" doc:id="4843f295-502d-4a20-afd9-2bd0e754d674" type="APP:CID_DOESNT_MATCH_COMIC" description="Request CID is NOT from Marvel Comic"/>
+			</otherwise>
+		</choice>
+	</flow>
 	<flow
 		name="get-tickets-data-by-bid"
 		doc:id="25901aa0-528f-43f5-9661-f83dd80737f2">
@@ -21,54 +50,49 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			doc:name="Log Correlation ID"
 			doc:id="b10c4de9-4f91-421b-b79e-9c437e7c5de5"
 			message="#['\n****************************************\n' ++ 'Flow started with correlation id - ' ++ correlationId ++ '\n****************************************\n']" />
-		<!-- [STUDIO:"Get Booking Data using BID"]<http:request
-			method="GET"
-			doc:name="Get Booking Data using BID"
-			doc:id="a974cca3-1fcc-4496-83ec-6eacef5eb6a7"
-			config-ref="bookingsDataByBID"
-			path="/{bookingID}"
-			target="bookingData">
-			<http:uri-params><![CDATA[#[output application/java
-&#45;&#45;-
-{
-	"bookingID" : vars.BID
-}&#93;&#93;&#93;></http:uri-params>
-		</http:request> [STUDIO] -->
-		<super-heros-movies-data-sapi:get-movies-by-cid doc:name="Get Movies by CID" doc:id="7395a0cd-26c2-45a3-b97c-f7bcaa2cfae0" config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]" target="superMovies"/>
-		<super-heros-bio-data-sapi:get-biodata-by-cid doc:name="Get BioData by CID" doc:id="5e625b50-351b-46f9-9fe0-c8ce69f1e13e" config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" target="superBioData"/>
+		<!-- [STUDIO:"get-booking-data-by-bid"]<flow-ref doc:name="get-booking-data-by-bid" doc:id="d41ba651-92c4-4027-ba65-b1110e7acec0" name="get-booking-data-by-bid" /> [STUDIO] -->
+		<flow-ref doc:name="get-movies-data-by-cid" doc:id="b6d59116-5b9d-418e-8c8a-ffb1bbcc462f" name="get-movies-data-by-cid" />
+		<flow-ref doc:name="get-biodata-by-cid" doc:id="639ac917-0c10-4c8a-9e8c-491a628cc1f0" name="get-biodata-by-cid" />
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-  ticket: {
-    booking_id: "BID7890",
-    film_name: "Avengers - Infinity War",
-    cinema_name: "Acme IMAX",
-    screen_name: "Audi 7",
-    seats: "RR - H4",
-    imdb_rating: 8.9,
-    language: "English",
-    date_time: "Tue, 08 Feb, 2022 | 04:26 PM"
-  },
-  character: {
-    id: "MARVEL0002",
-    name: "Thanos",
-    birthplace: "Titan",
-    publisher: "Marvel Comics",
-    movies: [
-      {
-        name: "Avengers Endgame,",
-        year: 2019
-      }, 
-      {
-        name: "Guardians of the Galaxy",
-        year: 2014
-      }
-    ]
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+	ticket: {
+		booking_id: vars.bookingData.booking_id default "",
+		film_name: vars.bookingData.film.film_name default "",
+		
+		// Bezbedno spaja samo ona polja koja stvarno postoje (izbacuje null i prazne stringove)
+		cinema_name: [
+			vars.bookingData.cinema.cinema_name,
+			vars.bookingData.cinema.city,
+			vars.bookingData.cinema.country
+		] filter (!isEmpty($)) joinBy ", ",
+		
+		screen_name: vars.bookingData.cinema.screen_name default "",
+		seats: vars.bookingData.cinema.seats default "",
+		imdb_rating: vars.bookingData.film.imdb_rating default 0.0,
+		language: vars.bookingData.film.language default "",
+		
+		// Pokreće parsiranje datuma samo ako date_time polje zapravo postoji u nizu
+		date_time: if (vars.bookingData.film.showing[0].date_time != null) 
+					(vars.bookingData.film.showing[0].date_time as DateTime) as String {format: "E, dd MMM, yyyy | hh:mm a, ZZZZ"}
+				   else "N/A"
+	},
+	character: {
+		id: vars.superBioData.id default "",
+		name: vars.superBioData.name default "",
+		birthplace: vars.superBioData.birthplace default "",
+		publisher: vars.superBioData.publisher default "",
+		movies: if (vars.superMovies.movies != null) 
+					(vars.superMovies.movies map ( superMovie , indexOfMovie ) -> {
+						name: superMovie.name,
+						year: superMovie.year
+					}) 
+				else []
+	}
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
