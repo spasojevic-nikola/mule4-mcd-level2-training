@@ -13,17 +13,20 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<flow name="get-biodata-by-cid" doc:id="f23e8bc8-6c49-42fc-ab8a-a7ca301aa38e" >
-		<super-heros-bio-data-sapi:get-biodata-by-cid doc:name="Get BioData by CID" doc:id="5e625b50-351b-46f9-9fe0-c8ce69f1e13e" config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" target="superBioData" />
+
+	<flow name="get-biodata-by-cid" doc:id="f3fc44e0-4b05-4c6c-a7ae-579678d5a069" >
+		<super-heros-bio-data-sapi:get-biodata-by-cid doc:name="Get BioData by CID" doc:id="f44be875-df74-488b-a3b6-c850ae014e15" config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" target="superBioData" />
 	</flow>
-	<flow name="get-movies-data-by-cid" doc:id="97d4793a-084a-4c5a-a5de-777086590188" >
-		<super-heros-movies-data-sapi:get-movies-by-cid doc:name="Get Movies by CID" doc:id="7395a0cd-26c2-45a3-b97c-f7bcaa2cfae0" config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]" target="superMovies" />
+
+	<flow name="get-movies-data-by-cid" doc:id="de5e21cc-9723-41bf-8fe9-e8e66d30c07d" >
+		<super-heros-movies-data-sapi:get-movies-by-cid doc:name="Get Movies by CID" doc:id="26bb200e-1ebe-49cf-8bf9-accaa77d00f3" config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]" target="superMovies" />
 	</flow>
-	<flow name="get-booking-data-by-bid" doc:id="c55221fc-768b-4046-a223-5b6d26a164e0" >
+
+	<flow name="get-booking-data-by-bid" doc:id="2731d6e3-25d2-4802-8ae7-c43bee150004" >
 		<http:request
 			method="GET"
 			doc:name="Get Booking Data using BID"
-			doc:id="a974cca3-1fcc-4496-83ec-6eacef5eb6a7"
+			doc:id="4cc43b28-2dca-4f25-a555-f1a0da960ae4"
 			config-ref="bookingsDataByBID"
 			path="/{bookingID}"
 			target="bookingData">
@@ -33,26 +36,35 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"bookingID" : vars.BID
 }]]]></http:uri-params>
 		</http:request>
-		<choice doc:name="Choice" doc:id="c29fdae0-c211-486c-aaa2-3b6d3aeb546d" >
-			<when expression="#[%dw 2.0&#10;import first from dw::core::Strings&#10;output application/java&#10;var bookingDataComicValue = vars.bookingData.film.comic first 2&#10;---&#10;vars.CID contains bookingDataComicValue]">
-				<logger level="INFO" doc:name="Request CID is from Marvel Comic" doc:id="0245ca46-437f-4f5d-9306-08178cb6db25" message="Request CID is from Marvel Comic"/>
+		<choice doc:name="Choice" doc:id="e8fb34a1-dc79-4e28-b975-597f6486e450" >
+			<when expression='#[%dw 2.0&#10;import first from dw::core::Strings&#10;output application/java&#10;var bookingDataComicValue = (vars.bookingData.film.comic default "") first 2&#10;---&#10;if (bookingDataComicValue != "") (vars.CID contains bookingDataComicValue) else false]'>
+				<logger level="INFO" doc:name="Request CID is from Marvel Comic" doc:id="1494debe-d11e-4cc2-8962-1cc5fb6ee009" message="Request CID is from Marvel Comic"/>
 			</when>
 			<otherwise >
-				<raise-error doc:name="Request CID is NOT from Marvel Comic" doc:id="4843f295-502d-4a20-afd9-2bd0e754d674" type="APP:CID_DOESNT_MATCH_COMIC" description="Request CID is NOT from Marvel Comic"/>
+				<raise-error doc:name="Request CID is NOT from Marvel Comic" doc:id="53e00ad3-e3ec-4191-9654-6ff4b602f774" type="APP:CID_DOESNT_MATCH_COMIC" description="Request CID is NOT from Marvel Comic"/>
 			</otherwise>
 		</choice>
 	</flow>
+
 	<flow
 		name="get-tickets-data-by-bid"
-		doc:id="25901aa0-528f-43f5-9661-f83dd80737f2">
+		doc:id="4c3d3b36-bce1-4178-a1dc-9a1a47bee97b">
 		<logger
 			level="INFO"
 			doc:name="Log Correlation ID"
-			doc:id="b10c4de9-4f91-421b-b79e-9c437e7c5de5"
+			doc:id="abb79cdb-36dd-4ff2-8d69-a9d8d4bc6038"
 			message="#['\n****************************************\n' ++ 'Flow started with correlation id - ' ++ correlationId ++ '\n****************************************\n']" />
-		<!-- [STUDIO:"get-booking-data-by-bid"]<flow-ref doc:name="get-booking-data-by-bid" doc:id="d41ba651-92c4-4027-ba65-b1110e7acec0" name="get-booking-data-by-bid" /> [STUDIO] -->
-		<flow-ref doc:name="get-movies-data-by-cid" doc:id="b6d59116-5b9d-418e-8c8a-ffb1bbcc462f" name="get-movies-data-by-cid" />
-		<flow-ref doc:name="get-biodata-by-cid" doc:id="639ac917-0c10-4c8a-9e8c-491a628cc1f0" name="get-biodata-by-cid" />
+		<scatter-gather doc:name="Scatter-Gather" doc:id="e5023ded-fab9-470f-9140-73dd6745b834" >
+			<route >
+				<!-- [STUDIO:"get-booking-data-by-bid"]<flow-ref doc:name="get-booking-data-by-bid" doc:id="a3ae06dc-1ae5-4250-a56e-0961e3b4fa6a" name="get-booking-data-by-bid" /> [STUDIO] -->
+				<flow-ref doc:name="get-movies-data-by-cid" doc:id="c8f7fdd7-af92-439e-9671-76f31805cada" name="get-movies-data-by-cid" />
+			</route>
+			<route >
+				<flow-ref doc:name="get-biodata-by-cid" doc:id="41cd2f6a-0594-4a41-8ca9-3a842d0f3387" name="get-biodata-by-cid" />
+			
+</route>
+		
+</scatter-gather>
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -95,5 +107,23 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-	</flow>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="416c746b-3b24-4b40-8dcd-5498519979bb" type="MULE:COMPOSITE_ROUTING">
+				<set-variable value="#[output application/json --- error.errorMessage.payload.failures pluck ($$&#10;)]" doc:name="failedRouteIndex" doc:id="4b8fbb2c-7581-4b61-8dec-40db47c2a853" variableName="failedRouteIndex"/>
+				<set-variable value="#[output application/json --- error.errorMessage.payload.results pluck ($$&#10;)]" doc:name="successRouteIndex" doc:id="423b7e10-e595-4312-8c99-f08c89fb9d29" variableName="successRouteIndex"/>
+				<foreach doc:name="For Each" doc:id="ec51773f-111d-4a63-a0a8-7db114d6f30b" collection="#[vars.successRouteIndex]">
+					<!--  Make sure to follow the order from scatter-gather -->
+					<choice doc:name="Choice" doc:id="810fcd1d-9c4e-4eca-981a-f549ddcb249b">
+					<when expression="#[payload == '0']">
+						<logger level="INFO" doc:name="Logger" doc:id="7d3cc123-8942-42ae-abb0-1cf7123fe4e1" message="compensate-logic-for-movies-service" />
+					</when>
+					<when expression="#[payload == '1']">
+						<logger level="INFO" doc:name="Logger" doc:id="6cc0bc47-02ff-43fd-b7b9-63396f5aa787" message="compensate-logic-for-biodata-service" />
+					</when>
+				</choice>
+				</foreach>
+			</on-error-propagate>
+		</error-handler>
+	
+</flow>
 </mule>
