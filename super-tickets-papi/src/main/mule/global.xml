@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
 	xmlns:os="http://www.mulesoft.org/schema/mule/os"
 	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
@@ -10,7 +11,9 @@
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
@@ -19,7 +22,8 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
-http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd">
+http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 
 	<!-- Environment properties mora biti definisan iznad genericnog properties.yaml 
 		fajla, zbog prioriteta -->
@@ -87,14 +91,48 @@ http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oa
 		property_basePath="/api/v1"
 		property_protocol="HTTPS"
 		property_responseTimeout="4000" />
-	<os:object-store name="oauthTokenObjectStore" doc:name="Object store" doc:id="41cab2e5-264e-4152-a32e-de6b9dd3a245" entryTtl="60" entryTtlUnit="MINUTES" expirationInterval="60" />
-	<http:request-config name="bookingsDataByBID" doc:name="HTTP Request configuration" doc:id="51e49c7c-c6e9-4910-bfcd-f37e06c6b9f2" basePath="/booking" >
-		<http:request-connection protocol="HTTPS" host="onlineman477-eval-prod.apigee.net" port="443" >
-			<http:authentication >
-				<oauth:client-credentials-grant-type clientId="KZ24TpHNeppVOmwtKpD6jQAjnq4vrLG1" clientSecret="CYBpVYhSeqSy4GSR" tokenUrl="https://onlineman477-eval-prod.apigee.net/owasp-oauth/token" >
-					<oauth:token-manager objectStore="oauthTokenObjectStore" />
+	<os:object-store
+		name="oauthTokenObjectStore"
+		doc:name="Object store"
+		doc:id="00191788-6efc-4c72-a74a-9b4eb5621161"
+		persistent="true"
+		entryTtl="60"
+		entryTtlUnit="MINUTES"
+		expirationInterval="60"
+		expirationIntervalUnit="MINUTES" />
+	<http:request-config
+		name="bookingsDataByBID"
+		doc:name="HTTP Request configuration"
+		doc:id="51e49c7c-c6e9-4910-bfcd-f37e06c6b9f2"
+		basePath="/booking">
+		<http:request-connection
+			protocol="HTTPS"
+			host="onlineman477-eval-prod.apigee.net"
+			port="443">
+			<http:authentication>
+				<oauth:client-credentials-grant-type
+					clientId="KZ24TpHNeppVOmwtKpD6jQAjnq4vrLG1"
+					clientSecret="CYBpVYhSeqSy4GSR"
+					tokenUrl="https://onlineman477-eval-prod.apigee.net/owasp-oauth/token">
+					<oauth:token-manager
+						objectStore="oauthTokenObjectStore" />
 				</oauth:client-credentials-grant-type>
 			</http:authentication>
 		</http:request-connection>
 	</http:request-config>
+	<os:object-store
+		name="bioDataObjectStore"
+		doc:name="Object store"
+		doc:id="edb509a7-2bc8-4d03-aa8a-1388f1231273"
+		persistent="true"
+		entryTtl="60"
+		entryTtlUnit="MINUTES"
+		expirationInterval="30"
+		expirationIntervalUnit="SECONDS" />
+	<ee:object-store-caching-strategy
+		name="biodataCachingStrategy"
+		doc:name="Caching Strategy"
+		doc:id="ca1b49a8-93ed-4a3e-8039-9e97438efca5"
+		keyGenerationExpression="#[vars.CID]"
+		objectStore="bioDataObjectStore" />
 </mule>

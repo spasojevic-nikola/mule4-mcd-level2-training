@@ -17,12 +17,16 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	<flow
 		name="get-biodata-by-cid"
 		doc:id="f3fc44e0-4b05-4c6c-a7ae-579678d5a069">
-		<super-heros-bio-data-sapi:get-biodata-by-cid
-			doc:name="Get BioData by CID"
-			doc:id="f44be875-df74-488b-a3b6-c850ae014e15"
-			config-ref="superHerosBioDataSAPIConfig"
-			id="#[vars.CID]"
-			target="superBioData" />
+		<ee:cache doc:name="Cache" doc:id="39bd7430-d1a7-48f8-8a7f-5bcc46a34d31" cachingStrategy-ref="biodataCachingStrategy">
+			<super-heros-bio-data-sapi:get-biodata-by-cid
+	doc:name="Get BioData by CID"
+	doc:id="f44be875-df74-488b-a3b6-c850ae014e15"
+	config-ref="superHerosBioDataSAPIConfig"
+	id="#[vars.CID]"/>
+	<!--  target="superBioData"  --> 
+	<!-- izbacujem ovu target varijablu, jer cache scope moze da kesira samo payload, ne i varijable -->
+		</ee:cache>
+
 	</flow>
 
 	<flow
@@ -129,7 +133,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 				<flow-ref
 					doc:name="get-biodata-by-cid"
 					doc:id="41cd2f6a-0594-4a41-8ca9-3a842d0f3387"
-					name="get-biodata-by-cid" />
+					name="get-biodata-by-cid" target="superBioData"/>
 			
 </route>
 		
