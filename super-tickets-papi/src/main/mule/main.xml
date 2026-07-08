@@ -225,4 +225,24 @@ output application/json
 		</error-handler>
 	
 </flow>
+	<flow name="cancel-show-notifications" doc:id="a37072a7-fc53-4f02-8c27-f5bfad3ded51" >
+		<http:listener doc:name="POST /api/cancelShow" doc:id="dd3d2447-14e4-4d5a-97ba-e560efff3c8a" config-ref="apiHttpListenerConfig" path="/api/cancelShow">
+			<http:response statusCode="202">
+				<http:body ><![CDATA[OK]]></http:body>
+			</http:response>
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="51d098c1-f944-4073-8b0a-9fa09d0c87ec" message="Show Cancel Notifications"/>
+	</flow>
+	<flow name="register-callback-external-service" doc:id="515fe0c2-b9b5-41f9-8a10-c1e14773913e" >
+		<http:listener doc:name="POST /api/registerCallback" doc:id="9fd75a41-5325-4e9a-a364-a6d04d1163a6" config-ref="apiHttpListenerConfig" path="/api/registerCallback"/>
+		<http:request method="POST" doc:name="External Service" doc:id="12931e6c-2b9a-402d-8864-5331d8f38341" url="https://onlineman477-eval-prod.apigee.net/booking/register">
+			<http:body ><![CDATA[#[output application/json
+---
+{
+	"callBackURL": Mule::p('api.callBack.url')
+}]]]></http:body>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="c256cb99-d5a1-419d-839e-1349bd8db116" message="Callback URL Registered Successfully"/>
+	</flow>
+
 </mule>
