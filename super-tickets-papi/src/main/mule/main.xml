@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule
+<mule xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
 	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
@@ -8,83 +8,90 @@
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd">
 
-	<flow
-		name="get-biodata-by-cid"
+	<flow name="get-biodata-by-cid"
 		doc:id="f3fc44e0-4b05-4c6c-a7ae-579678d5a069">
-		<ee:cache doc:name="Cache" doc:id="39bd7430-d1a7-48f8-8a7f-5bcc46a34d31" cachingStrategy-ref="biodataCachingStrategy">
+		<ee:cache doc:name="Cache"
+			doc:id="39bd7430-d1a7-48f8-8a7f-5bcc46a34d31"
+			cachingStrategy-ref="biodataCachingStrategy">
 			<super-heros-bio-data-sapi:get-biodata-by-cid
-	doc:name="Get BioData by CID"
-	doc:id="f44be875-df74-488b-a3b6-c850ae014e15"
-	config-ref="superHerosBioDataSAPIConfig"
-	id="#[vars.CID]"/>
-	<!--  target="superBioData"  --> 
-	<!-- izbacujem ovu target varijablu, jer cache scope moze da kesira samo payload, ne i varijable -->
+				doc:name="Get BioData by CID"
+				doc:id="f44be875-df74-488b-a3b6-c850ae014e15"
+				config-ref="superHerosBioDataSAPIConfig" id="#[vars.CID]" />
+			<!-- target="superBioData" -->
+			<!-- izbacujem ovu target varijablu, jer cache scope moze da kesira samo 
+				payload, ne i varijable -->
 		</ee:cache>
 
 	</flow>
 
-	<flow
-		name="get-movies-data-by-cid"
+	<flow name="get-movies-data-by-cid"
 		doc:id="de5e21cc-9723-41bf-8fe9-e8e66d30c07d">
-		<until-successful
-			maxRetries="2"
+		<until-successful maxRetries="2"
 			doc:name="Until Successful"
 			doc:id="b0f23690-554e-4467-838b-b7f7d4857d86"
 			millisBetweenRetries="500">
-			<try
-				doc:name="Try"
-				doc:id="1ca01a54-f820-4164-a7d5-ae2e22616814">
+			<try doc:name="Try" doc:id="1ca01a54-f820-4164-a7d5-ae2e22616814">
 				<super-heros-movies-data-sapi:get-movies-by-cid
 					doc:name="Get Movies by CID"
 					doc:id="26bb200e-1ebe-49cf-8bf9-accaa77d00f3"
-					config-ref="superHerosMoviesDataSAPIConfig"
-					id="#[vars.CID]"
+					config-ref="superHerosMoviesDataSAPIConfig" id="#[vars.CID]"
 					target="superMovies" />
 				<error-handler>
-					<!-- for those 3 error types, I want the until successful scope to retry the request multiple times -->
-					<on-error-propagate
-						enableNotifications="true"
-						logException="true"
-						doc:name="On Error Propagate"
+					<!-- for those 3 error types, I want the until successful scope to retry 
+						the request multiple times -->
+					<on-error-propagate enableNotifications="true"
+						logException="true" doc:name="On Error Propagate"
 						doc:id="76ed4d8a-6881-4470-984d-15f5879c9938"
-						type="SUPER-HEROS-MOVIES-DATA-SAPI:CONNECTIVITY, SUPER-HEROS-MOVIES-DATA-SAPI:TIMEOUT, SUPER-HEROS-MOVIES-DATA-SAPI:TOO_MANY_REQUESTS" >
-						<logger level="INFO" doc:name="Logger" doc:id="e32be99b-3399-4fa8-83aa-2127c332e0c1" message="Transient Error"/>
+						type="SUPER-HEROS-MOVIES-DATA-SAPI:CONNECTIVITY, SUPER-HEROS-MOVIES-DATA-SAPI:TIMEOUT, SUPER-HEROS-MOVIES-DATA-SAPI:TOO_MANY_REQUESTS">
+						<logger level="INFO" doc:name="Logger"
+							doc:id="e32be99b-3399-4fa8-83aa-2127c332e0c1"
+							message="Transient Error" />
 					</on-error-propagate>
-						
-					<!-- for the permanent errors we don't want them to be retried, so we use On Error Continue -->
-					<on-error-continue type="SUPER-HEROS-MOVIES-DATA-SAPI:FORBIDDEN, SUPER-HEROS-MOVIES-DATA-SAPI:UNAUTHORIZED" enableNotifications="true" logException="true">
-						<logger level="INFO" doc:name="Logger" doc:id="12b1ad80-063c-4362-a8b3-f40600c602ec" message="Permanent Errors"/>
-						<set-variable value="" doc:name="permanentErrors = yes" doc:id="dbadd1b5-15ee-4e3e-b891-abb113784e19" variableName="permanentErrors"/>
 
-						
+					<!-- for the permanent errors we don't want them to be retried, so we 
+						use On Error Continue -->
+					<on-error-continue
+						type="SUPER-HEROS-MOVIES-DATA-SAPI:FORBIDDEN, SUPER-HEROS-MOVIES-DATA-SAPI:UNAUTHORIZED"
+						enableNotifications="true" logException="true">
+						<logger level="INFO" doc:name="Logger"
+							doc:id="12b1ad80-063c-4362-a8b3-f40600c602ec"
+							message="Permanent Errors" />
+						<set-variable value=""
+							doc:name="permanentErrors = yes"
+							doc:id="dbadd1b5-15ee-4e3e-b891-abb113784e19"
+							variableName="permanentErrors" />
+
+
 					</on-error-continue>
 				</error-handler>
 			</try>
-			<choice doc:name="Choice" doc:id="7e55895e-db1c-4ca6-a37e-cef7aa8ab203" >
+			<choice doc:name="Choice"
+				doc:id="7e55895e-db1c-4ca6-a37e-cef7aa8ab203">
 				<when expression='#[vars.permanentErrors == "yes"]'>
-					<raise-error doc:name="APP:MOVIES_DATA_PERMANENT_ERROR" doc:id="6837668d-e3e6-4e82-b8c9-7db2bda267dd" type="APP:MOVIES_DATA_PERMANENT_ERROR"/>
+					<raise-error doc:name="APP:MOVIES_DATA_PERMANENT_ERROR"
+						doc:id="6837668d-e3e6-4e82-b8c9-7db2bda267dd"
+						type="APP:MOVIES_DATA_PERMANENT_ERROR" />
 				</when>
 			</choice>
 		</until-successful>
 
 	</flow>
 
-	<flow
-		name="get-booking-data-by-bid"
+	<flow name="get-booking-data-by-bid"
 		doc:id="2731d6e3-25d2-4802-8ae7-c43bee150004">
-		<http:request
-			method="GET"
+		<http:request method="GET"
 			doc:name="Get Booking Data using BID"
 			doc:id="4cc43b28-2dca-4f25-a555-f1a0da960ae4"
-			config-ref="bookingsDataByBID"
-			path="/{bookingID}"
+			config-ref="bookingsDataByBID" path="/{bookingID}"
 			target="bookingData">
 			<http:uri-params><![CDATA[#[output application/java
 ---
@@ -92,13 +99,11 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 	"bookingID" : vars.BID
 }]]]></http:uri-params>
 		</http:request>
-		<choice
-			doc:name="Choice"
+		<choice doc:name="Choice"
 			doc:id="e8fb34a1-dc79-4e28-b975-597f6486e450">
 			<when
 				expression='#[%dw 2.0&#10;import first from dw::core::Strings&#10;output application/java&#10;var bookingDataComicValue = (vars.bookingData.film.comic default "") first 2&#10;---&#10;if (bookingDataComicValue != "") (vars.CID contains bookingDataComicValue) else false]'>
-				<logger
-					level="INFO"
+				<logger level="INFO"
 					doc:name="Request CID is from Marvel Comic"
 					doc:id="1494debe-d11e-4cc2-8962-1cc5fb6ee009"
 					message="Request CID is from Marvel Comic" />
@@ -113,32 +118,29 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 		</choice>
 	</flow>
 
-	<flow
-		name="get-tickets-data-by-bid"
+	<flow name="get-tickets-data-by-bid"
 		doc:id="4c3d3b36-bce1-4178-a1dc-9a1a47bee97b">
-		<logger
-			level="INFO"
-			doc:name="Log Correlation ID"
+		<logger level="INFO" doc:name="Log Correlation ID"
 			doc:id="abb79cdb-36dd-4ff2-8d69-a9d8d4bc6038"
 			message="#['\n****************************************\n' ++ 'Flow started with correlation id - ' ++ correlationId ++ '\n****************************************\n']" />
-		<scatter-gather
-			doc:name="Scatter-Gather"
+		<scatter-gather doc:name="Scatter-Gather"
 			doc:id="e5023ded-fab9-470f-9140-73dd6745b834">
 			<route>
 				<!-- [STUDIO:"get-booking-data-by-bid"]<flow-ref doc:name="get-booking-data-by-bid" 
 					doc:id="a3ae06dc-1ae5-4250-a56e-0961e3b4fa6a" name="get-booking-data-by-bid" 
 					/> [STUDIO] -->
-				<flow-ref doc:name="get-movies-data-by-cid" doc:id="c8f7fdd7-af92-439e-9671-76f31805cada" name="get-movies-data-by-cid" />
+				<flow-ref doc:name="get-movies-data-by-cid"
+					doc:id="c8f7fdd7-af92-439e-9671-76f31805cada"
+					name="get-movies-data-by-cid" />
 			</route>
 			<route>
-				<flow-ref
-					doc:name="get-biodata-by-cid"
+				<flow-ref doc:name="get-biodata-by-cid"
 					doc:id="41cd2f6a-0594-4a41-8ca9-3a842d0f3387"
-					name="get-biodata-by-cid" target="superBioData"/>
-			
-</route>
-		
-</scatter-gather>
+					name="get-biodata-by-cid" target="superBioData" />
+
+			</route>
+
+		</scatter-gather>
 		<ee:transform doc:name="Transform Message">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -182,10 +184,8 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<error-handler>
-			<on-error-propagate
-				enableNotifications="true"
-				logException="true"
-				doc:name="On Error Propagate"
+			<on-error-propagate enableNotifications="true"
+				logException="true" doc:name="On Error Propagate"
 				doc:id="416c746b-3b24-4b40-8dcd-5498519979bb"
 				type="MULE:COMPOSITE_ROUTING">
 				<set-variable
@@ -198,25 +198,19 @@ output application/json
 					doc:name="successRouteIndex"
 					doc:id="423b7e10-e595-4312-8c99-f08c89fb9d29"
 					variableName="successRouteIndex" />
-				<foreach
-					doc:name="For Each"
+				<foreach doc:name="For Each"
 					doc:id="ec51773f-111d-4a63-a0a8-7db114d6f30b"
 					collection="#[vars.successRouteIndex]">
 					<!-- Make sure to follow the order from scatter-gather -->
-					<choice
-						doc:name="Choice"
+					<choice doc:name="Choice"
 						doc:id="810fcd1d-9c4e-4eca-981a-f549ddcb249b">
 						<when expression="#[payload == '0']">
-							<logger
-								level="INFO"
-								doc:name="Logger"
+							<logger level="INFO" doc:name="Logger"
 								doc:id="7d3cc123-8942-42ae-abb0-1cf7123fe4e1"
 								message="compensate-logic-for-movies-service" />
 						</when>
 						<when expression="#[payload == '1']">
-							<logger
-								level="INFO"
-								doc:name="Logger"
+							<logger level="INFO" doc:name="Logger"
 								doc:id="6cc0bc47-02ff-43fd-b7b9-63396f5aa787"
 								message="compensate-logic-for-biodata-service" />
 						</when>
@@ -224,16 +218,49 @@ output application/json
 				</foreach>
 			</on-error-propagate>
 		</error-handler>
-	
-</flow>
-	<flow name="cancel-show-notifications" doc:id="a37072a7-fc53-4f02-8c27-f5bfad3ded51" >
-		<http:listener doc:name="POST /api/cancelShow" doc:id="dd3d2447-14e4-4d5a-97ba-e560efff3c8a" config-ref="apiHttpListenerConfig" path="/api/cancelShow">
+
+	</flow>
+	<flow name="cancel-show-notifications"
+		doc:id="a37072a7-fc53-4f02-8c27-f5bfad3ded51">
+		<http:listener doc:name="POST /api/cancelShow"
+			doc:id="dd3d2447-14e4-4d5a-97ba-e560efff3c8a"
+			config-ref="apiHttpListenerConfig" path="/api/cancelShow">
 			<http:response statusCode="202">
-				<http:body ><![CDATA[OK]]></http:body>
+				<http:body><![CDATA[OK]]></http:body>
 			</http:response>
 		</http:listener>
-		<vm:publish queueName="cancel-show-notifications-queue" doc:name="cancel-show-vm" doc:id="376a7e37-71c2-4284-a6de-7f33036c71e5" config-ref="vmConfigShowCancellation" sendCorrelationId="ALWAYS"/>
+		<vm:publish queueName="cancel-show-notifications-queue"
+			doc:name="cancel-show-vm"
+			doc:id="376a7e37-71c2-4284-a6de-7f33036c71e5"
+			config-ref="vmConfigShowCancellation" sendCorrelationId="ALWAYS" />
 		<logger level="INFO" doc:name="Logger" doc:id="51d098c1-f944-4073-8b0a-9fa09d0c87ec" message="Show Cancel Notifications"/>
+	</flow>
+	<flow name="process-cancel-show-notifications" doc:id="c113c030-f228-42f1-89cc-2eed521c5344" >
+		<vm:listener queueName="cancel-show-notifications-queue" doc:name="Listener" doc:id="772f3eea-4f68-4f70-9b36-3d304838b25b" config-ref="vmConfigShowCancellation" transactionalAction="ALWAYS_BEGIN">
+			<redelivery-policy maxRedeliveryCount="2" idExpression="#[correlationId]" useSecureHash="false" />
+		</vm:listener>
+		<ee:transform doc:name="Transform Message" doc:id="7e2622be-aac9-4a48-acee-22414d26739f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	bid: payload.cancelShowNotification.booking_id,
+	mobile: payload.cancelShowNotification.user_mobile,
+	processedAt: now() >> "GMT"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1d6c9bbf-bf78-4c90-8715-fb02fef8f55c" message="Notifications Received"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="982fffc5-1d76-4b48-b7e6-851fae775c2c" type="MULE:REDELIVERY_EXHAUSTED">
+				<vm:publish queueName="cancel-show-notifications-dlq" doc:name="Cancel Show VM DLQ" doc:id="09088bb8-e08a-490b-841d-72bf0219ce7c" config-ref="vmConfigShowCancellation" sendCorrelationId="ALWAYS"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="process-cancel-show-notifications-dlq" doc:id="abd37a09-4fef-462b-84f0-4c42c5688976" >
+		<vm:listener queueName="cancel-show-notifications-dlq" doc:name="Listener" doc:id="1f307c64-4747-4072-81d6-332277db6f26" config-ref="vmConfigShowCancellation"/>
+		<logger level="INFO" doc:name="Logger" doc:id="97aae0d2-eba6-4233-b1ff-25c6d20f491d" message="Received Messages in DLQ"/>
 	</flow>
 	<flow name="register-callback-external-service" doc:id="515fe0c2-b9b5-41f9-8a10-c1e14773913e" >
 		<http:listener doc:name="POST /api/registerCallback" doc:id="9fd75a41-5325-4e9a-a364-a6d04d1163a6" config-ref="apiHttpListenerConfig" path="/api/registerCallback"/>
