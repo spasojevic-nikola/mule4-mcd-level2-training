@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
 	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
 
 	<flow
 		name="get-biodata-by-cid"
@@ -231,6 +232,7 @@ output application/json
 				<http:body ><![CDATA[OK]]></http:body>
 			</http:response>
 		</http:listener>
+		<vm:publish queueName="cancel-show-notifications-queue" doc:name="cancel-show-vm" doc:id="376a7e37-71c2-4284-a6de-7f33036c71e5" config-ref="vmConfigShowCancellation" sendCorrelationId="ALWAYS"/>
 		<logger level="INFO" doc:name="Logger" doc:id="51d098c1-f944-4073-8b0a-9fa09d0c87ec" message="Show Cancel Notifications"/>
 	</flow>
 	<flow name="register-callback-external-service" doc:id="515fe0c2-b9b5-41f9-8a10-c1e14773913e" >

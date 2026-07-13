@@ -35,6 +35,9 @@
 		<!-- Custom connectors -->
 		<super.biodata.version>1.0.0</super.biodata.version>
 		<super.movies.version>1.0.1</super.movies.version>
+		
+		<!-- VM connectors -->
+		<vm.module.version>2.0.1</vm.module.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -113,6 +116,12 @@
 				<groupId>org.mule.connectors</groupId>
 				<artifactId>mule-objectstore-connector</artifactId>
 				<version>${objectstore.connector.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.mule.connectors</groupId>
+				<artifactId>mule-vm-connector</artifactId>
+				<version>${vm.module.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>
