@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+		<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../parent-pom/pom.xml</relativePath>
@@ -17,7 +17,7 @@
 		<environment>${env}</environment>
 		<chTarget>Cloudhub-EU-Central-1</chTarget>
 		<appName>ch2-super-tickets-papi-${env}</appName>
-		<api.groupId>326bc611-129e-442f-9497-edcad1cc83f8</api.groupId>
+		<api.groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</api.groupId>
 		<api.artifactId>super-tickets-papi</api.artifactId>
 		<api.version>1.0.0</api.version>
 
@@ -72,12 +72,12 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+			<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 			<artifactId>mule-plugin-super-biodata-sapi</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+			<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 			<artifactId>mule-plugin-super-movies-sapi</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
@@ -98,4 +98,30 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<!-- 1. Privatni repozitorijum tvoje organizacije na Anypoint Exchange-u -->
+		<repository>
+			<id>Super-Organization-App</id>
+			<name>Anypoint Exchange Organization</name>
+			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc/maven</url>
+			<layout>default</layout>
+		</repository>
+
+		<!-- 2. Opšti Anypoint Exchange V3 repozitorijum -->
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+
+		<!-- 3. Predefinisan MuleRepository da NE ide na nexus-ee, vec na javni repo -->
+		<repository>
+			<id>MuleRepository</id>
+			<name>MuleSoft Releases Repository</name>
+			<url>https://repository.mulesoft.org/releases/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>

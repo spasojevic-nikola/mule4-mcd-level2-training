@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+	<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 	<artifactId>master-bom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -38,6 +38,10 @@
 		
 		<!-- VM connectors -->
 		<vm.module.version>2.0.1</vm.module.version>
+		
+		<!-- MongoDB -->
+		<mongo.connector.version>6.3.7</mongo.connector.version>
+		<mongo.driver.version>3.12.14</mongo.driver.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -88,13 +92,13 @@
 				<classifier>mule-plugin</classifier>
 			</dependency>
 			<dependency>
-				<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+				<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 				<artifactId>mule-plugin-super-biodata-sapi</artifactId>
 				<version>${super.biodata.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 			<dependency>
-				<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+				<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 				<artifactId>mule-plugin-super-movies-sapi</artifactId>
 				<version>${super.movies.version}</version>
 				<classifier>mule-plugin</classifier>
@@ -124,13 +128,26 @@
 				<version>${vm.module.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
+			<!-- MongoDB Connector -->
+			<dependency>
+				<groupId>com.mulesoft.connectors</groupId>
+				<artifactId>mule-mongodb-connector</artifactId>
+				<version>${mongo.connector.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<!-- MongoDB Java Driver -->
+			<dependency>
+				<groupId>org.mongodb</groupId>
+				<artifactId>mongodb-driver-legacy</artifactId>
+				<version>${mongo.driver.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<repositories>
 		<repository>
 			<id>Super-Organization-App</id>
 			<name>Anypoint Exchange</name>
-			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/326bc611-129e-442f-9497-edcad1cc83f8/maven</url>
+			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc/maven</url>
 			<layout>default</layout>
 		</repository>
 		<repository>

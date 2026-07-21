@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+		<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 		<artifactId>master-bom</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../master-bom/pom.xml</relativePath>
 	</parent>
-	<groupId>326bc611-129e-442f-9497-edcad1cc83f8</groupId>
+	<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 	<artifactId>parent-pom</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -41,6 +41,7 @@
 				<plugin>
 					<groupId>org.mule.tools.maven</groupId>
 					<artifactId>mule-maven-plugin</artifactId>
+					<version>${mule.maven.plugin.version}</version>
 					<extensions>true</extensions>
 					<configuration>
 						<cloudhub2Deployment>
@@ -51,7 +52,7 @@
 							<muleVersion>${muleVersion}</muleVersion>
 							<server>mc-deployer</server>
 							<applicationName>${appName}</applicationName>
-							<businessGroupId>326bc611-129e-442f-9497-edcad1cc83f8</businessGroupId>
+							<businessGroupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</businessGroupId>
 							<replicas>1</replicas>
 							<vCores>0.1</vCores>
 							<deploymentSettings>

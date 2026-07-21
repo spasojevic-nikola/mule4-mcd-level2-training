@@ -18,14 +18,14 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<!-- REPLACE with your Anypoint platform ORGANIZATION ID -->
 	<apikit:config
 		name="super-movies-sapi-config"
-		api="resource::326bc611-129e-442f-9497-edcad1cc83f8:super-movies-sapi:1.0.1:raml:zip:super-movies-sapi.raml"
+		api="resource::6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc:super-movies-sapi:1.0.1:raml:zip:super-movies-sapi.raml"
 		outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
 
 
 	<!-- REPLACE THE API-iID -->
 	<api-gateway:autodiscovery
-		apiId="2774546"
+		apiId="2798123"
 		ignoreBasePath="true"
 		doc:name="API Autodiscovery"
 		doc:id="f3a27ec9-a190-4356-8f99-806833299a0a"

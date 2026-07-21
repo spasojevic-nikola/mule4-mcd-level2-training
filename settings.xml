@@ -3,18 +3,18 @@
 	<servers>
 		<server>
 			<id>anypoint-exchange-v3</id>
-			<username>supernikola1</username>
-			<password>Nikolamilica123.</password>
-		</server>
-		<server>
-			<id>mc-deployer</id>
-			<username>supernikola1</username>
-			<password>Nikolamilica123.</password>
+			<username>~~~Client~~~</username>
+			<password>4b190c82db124e559f4b601ae5e6cffb~?~cEC1F66cc2f84a1d83cF35462Dca6882</password>
 		</server>
 		<server>
 			<id>Super-Organization-App</id>
 			<username>~~~Client~~~</username>
-			<password>ac1557630b984300ab01acc67e201ef4~?~1c8E02b40D564C6A8207811e915e5E84</password>
+			<password>4b190c82db124e559f4b601ae5e6cffb~?~cEC1F66cc2f84a1d83cF35462Dca6882</password>
+		</server>
+		<server>
+			<id>mc-deployer</id>
+			<username>supernikola2</username>
+			<password>Nikolamilica123.</password>
 		</server>
 	</servers>
 	<profiles>
@@ -24,14 +24,14 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<anypoint.client_id>7d3f98314ca8401bae31000bdd8759aa</anypoint.client_id>
-				<anypoint.client_secret>8Edb06d686464F29BFCf168F57Abc98E</anypoint.client_secret>
+				<anypoint.client_id>26f3a5b8a45a42fea2a092f351f4de5a</anypoint.client_id>
+				<anypoint.client_secret>2583Fe9262D44a789dD2575eFF1E94C7</anypoint.client_secret>
 			</properties>
 			<repositories>
 				<repository>
 					<id>Super-Organization-App</id>
 					<name>Anypoint Exchange V3</name>
-					<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/326bc611-129e-442f-9497-edcad1cc83f8/maven</url> 
+					<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc/maven</url>
 					<layout>default</layout>
 				</repository>
 				<repository>
