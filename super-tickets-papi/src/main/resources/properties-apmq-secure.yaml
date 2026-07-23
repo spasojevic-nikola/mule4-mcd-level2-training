@@ -1,0 +1,6 @@
+#ovo su demo kredencijali, Anypoint MQ NIJE dostupan na free trial organizaciji
+mq:
+  url: '![BZVXCKxX1kyMYc+hXrTRBqKvEbwQ7YOmQ3QUuUV5DO/9stRyjUH2YX0vJG00YF6TdT/t1uMgoYGc=]'
+  client_id: '![Cc9Bh0E9ibkQsSbufaDeTbMZvmqVzogX/mP/bgPwztLrTx2vsOlejg==]'
+  client_secret: '![I69b0sXiB8ZyKqnHm/+FlMaf47soKuTqkuK7kp8exxd6RqZ7Z0Dbpw==]'
+  destination: '![2/rA1WXN36dx9803DgitdA==]'

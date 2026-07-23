@@ -31,6 +31,7 @@
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
 				<extensions>true</extensions>
+				<version>4.1.0</version>
 				<configuration>
 					<sharedLibraries>
 						<sharedLibrary>
@@ -39,7 +40,6 @@
 						</sharedLibrary>
 					</sharedLibraries>
 				</configuration>
-				<version>4.1.0</version>
 			</plugin>
 		</plugins>
 	</build>
@@ -56,9 +56,9 @@
 
 		<!-- MongoDB Mule Connector (Verzija se vuče iz master-bom) -->
 		<dependency>
-		    <groupId>com.mulesoft.connectors</groupId>
-		    <artifactId>mule-mongodb-connector</artifactId>
-		    <classifier>mule-plugin</classifier>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-mongodb-connector</artifactId>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 
 		<!-- Java MongoDB Driver (Verzija se vuče iz master-bom) -->

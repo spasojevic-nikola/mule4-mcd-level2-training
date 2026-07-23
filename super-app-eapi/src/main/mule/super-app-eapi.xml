@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+	<anypoint-mq:config name="anypointMQConfig"
+		doc:name="Anypoint MQ Config"
+		doc:id="8f2754f1-b8a1-433c-9342-5ec4ce6a815c">
+		<!-- <anypoint-mq:connection url="${secure::mq.url}" clientId="${secure::mq.client_id}" 
+			clientSecret="${secure::mq.client_secret}" /> -->
+		<anypoint-mq:connection url="${mq.url}"
+			clientId="${mq.client_id}" clientSecret="${mq.client_secret}" />
+	</anypoint-mq:config>
+
+	<!-- Dodata fallback varijabla 'tvoj_tajni_kljuc' u slučaju da nije poslato 
+		preko -Dsecure.key.apmq -->
+	<!-- <secure-properties:config name="Secure_Properties_Config" doc:name="Secure 
+		Properties Config" doc:id="48604def-cd72-4108-a3cc-ac4c7ae06833" file="properties-apmq-secure.yaml" 
+		key="${secure.key.apmq default 'super_tajni_kljuc'}" > </secure-properties:config> -->
+	<configuration-properties
+		doc:name="Configuration properties"
+		doc:id="1a9fcf27-0ff5-419c-b1b9-7f23a27e54f4"
+		file="properties-apmq-secure.yaml" />
+
+	<anypoint-mq:circuit-breaker
+		name="apmqCircuitBreaker" tripTimeout="20" doc:name="Circuit breaker"
+		doc:id="5a077500-4141-4880-b5f3-4f1a1ff965d5"
+		onErrorTypes="HTTP:CONNECTIVITY" errorsThreshold="5"
+		tripTimeoutUnit="SECONDS" />
+
+	<flow name="super-app-eapiFlow"
+		doc:id="650b7eff-dd80-4ecd-ad8f-6e51aca21129">
+		
+		<!--radi kompajliranja zamenjen destination="${secure::mq.destination}"-->
+		<anypoint-mq:subscriber doc:name="Subscriber"
+			doc:id="3643682a-16a7-4d34-a69d-a04dda2e1728"
+			config-ref="anypointMQConfig" destination="${mq.destination}" 
+			acknowledgementMode="MANUAL" acknowledgementTimeout="10"
+			acknowledgementTimeoutUnit="SECONDS"
+			circuitBreaker="apmqCircuitBreaker" />
+
+		<ee:transform doc:name="Transform Message"
+			doc:id="5a920cf2-a2bc-491d-9adf-244d81780815">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	id: payload.bid,
+	num: payload.mobile
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+
+		<set-variable value="#[attributes.ackToken]"
+			doc:name="Set Variable" doc:id="c0ae5e1d-8e42-4f2d-a3ea-aef76a6c3635"
+			variableName="ackToken" />
+		<http:request method="POST" doc:name="HTTPBin Service"
+			doc:id="b824d183-9a33-413b-a499-e1dc7a118009"
+			url="https://httpbin.org/post" />
+		<logger level="INFO" doc:name="Logger"
+			doc:id="5feb3356-88c3-4059-87dd-a25ff419f539" message="#[payload]" />
+		<anypoint-mq:ack doc:name="Ack"
+			doc:id="07a0286a-d441-4bbc-be49-1da7bb14eff0"
+			config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+
+		<error-handler>
+			<on-error-propagate enableNotifications="false"
+				logException="false" doc:name="On Error Propagate"
+				doc:id="8f43716e-656d-4864-8ea5-7363d27c33a8" type="HTTP:NOT_FOUND">
+				<logger level="INFO" doc:name="Logger"
+					doc:id="8d692203-27bc-46de-968e-f534b83f5298"
+					message="HTTP NOT FOUND - Message is Acknowledged" />
+				<anypoint-mq:ack doc:name="Ack"
+					doc:id="8112c2ed-e270-47a6-aa88-22859707b3e0"
+					config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="false"
+				logException="false" doc:name="On Error Propagate"
+				doc:id="b6620841-08f8-4f78-8a57-8b4f398bd1b1"
+				type="HTTP:CONNECTIVITY">
+				<logger level="INFO" doc:name="Logger"
+					doc:id="4db9fa8d-fca4-41b0-bd4b-3b5d34e6ffdf"
+					message="HTTP Connectivity - Message is not Acknowledged" />
+				<anypoint-mq:nack doc:name="Nack"
+					doc:id="1260c350-56b8-4d38-8847-2151830596b4"
+					config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>

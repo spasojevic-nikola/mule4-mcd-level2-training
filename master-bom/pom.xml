@@ -42,6 +42,9 @@
 		<!-- MongoDB -->
 		<mongo.connector.version>6.3.7</mongo.connector.version>
 		<mongo.driver.version>3.12.14</mongo.driver.version>
+		
+		<!-- MQ Connectors --> 
+		<mq.version>4.0.21</mq.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -140,6 +143,12 @@
 				<groupId>org.mongodb</groupId>
 				<artifactId>mongodb-driver-legacy</artifactId>
 				<version>${mongo.driver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mulesoft.connectors</groupId>
+				<artifactId>anypoint-mq-connector</artifactId>
+				<version>${mq.version}</version>
+				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

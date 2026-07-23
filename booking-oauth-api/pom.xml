@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../parent-pom/pom.xml</relativePath>
-	</parent> <!-- groupId mi ne treba jer ga vuce iz pom/bom fajla -->
+	</parent>
+	<!-- groupId mi ne treba jer ga vuce iz pom/bom fajla -->
 	<artifactId>booking-oauth-api</artifactId>
 	<name>booking-oauth-api</name>
 	<version>1.0.0-SNAPSHOT</version>
@@ -38,32 +36,37 @@
 	</build>
 	<dependencies>
 		<dependency>
-		    <groupId>org.mule.connectors</groupId>
-		    <artifactId>mule-http-connector</artifactId>
-		    <classifier>mule-plugin</classifier>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.mule.connectors</groupId>
-		    <artifactId>mule-sockets-connector</artifactId>
-		    <classifier>mule-plugin</classifier>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.mule.modules</groupId>
-		    <artifactId>mule-oauth-module</artifactId>
-		    <classifier>mule-plugin</classifier>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.mule.connectors</groupId>
-		    <artifactId>mule-objectstore-connector</artifactId>
-		    <classifier>mule-plugin</classifier>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 		<dependency>
-		    <groupId>com.mulesoft.modules</groupId>
-		    <artifactId>mule-oauth2-provider-module</artifactId>
-		    <classifier>mule-plugin</classifier>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-sockets-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-oauth-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-objectstore-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.modules</groupId>
+			<artifactId>mule-oauth2-provider-module</artifactId>
+			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>
