@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
 	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
@@ -11,7 +12,8 @@
 http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
 
 	<anypoint-mq:config name="anypointMQConfig"
 		doc:name="Anypoint MQ Config"
@@ -40,39 +42,46 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 
 	<flow name="super-app-eapiFlow"
 		doc:id="650b7eff-dd80-4ecd-ad8f-6e51aca21129">
-		
-		<!--radi kompajliranja zamenjen destination="${secure::mq.destination}"-->
+
+		<!--radi kompajliranja zamenjen destination="${secure::mq.destination}" -->
 		<anypoint-mq:subscriber doc:name="Subscriber"
 			doc:id="3643682a-16a7-4d34-a69d-a04dda2e1728"
-			config-ref="anypointMQConfig" destination="${mq.destination}" 
+			config-ref="anypointMQConfig" destination="${mq.destination}"
 			acknowledgementMode="MANUAL" acknowledgementTimeout="10"
 			acknowledgementTimeoutUnit="SECONDS"
 			circuitBreaker="apmqCircuitBreaker" />
-
-		<ee:transform doc:name="Transform Message"
-			doc:id="5a920cf2-a2bc-491d-9adf-244d81780815">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+		<logger level="INFO" doc:name="Logger" doc:id="b6d02842-8a6a-49f3-9454-94968d4fa5db" message="Hello Flow"/>
+		<tracing:with-correlation-id
+			doc:name="With CorrelationID"
+			doc:id="93564dd5-5482-4735-9772-178d1537b4dc" correlationId="#[attributes.properties.correlationId]">
+			<ee:transform doc:name="Transform Message"
+				doc:id="d163df9b-e8e6-4244-8ed2-6539faa9c863">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
 {
 	id: payload.bid,
 	num: payload.mobile
 }]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+				</ee:message>
+			</ee:transform>
 
-		<set-variable value="#[attributes.ackToken]"
-			doc:name="Set Variable" doc:id="c0ae5e1d-8e42-4f2d-a3ea-aef76a6c3635"
-			variableName="ackToken" />
-		<http:request method="POST" doc:name="HTTPBin Service"
-			doc:id="b824d183-9a33-413b-a499-e1dc7a118009"
-			url="https://httpbin.org/post" />
-		<logger level="INFO" doc:name="Logger"
-			doc:id="5feb3356-88c3-4059-87dd-a25ff419f539" message="#[payload]" />
-		<anypoint-mq:ack doc:name="Ack"
-			doc:id="07a0286a-d441-4bbc-be49-1da7bb14eff0"
-			config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+			<set-variable value="#[attributes.ackToken]"
+				doc:name="Set Variable"
+				doc:id="aae53e42-7bf9-49a6-9fdc-0cb43cfa0696"
+				variableName="ackToken" />
+			<http:request method="POST" doc:name="HTTPBin Service"
+				doc:id="340b0960-aa1c-4849-9af9-589d1656b9e0"
+				url="https://httpbin.org/post" />
+			<logger level="INFO" doc:name="Logger"
+				doc:id="6ed51500-69cb-4f1c-b3f6-bd2bdf7e8c06" message="#[payload]" />
+			<anypoint-mq:ack doc:name="Ack"
+				doc:id="afb88a50-6b66-4a82-9fee-de0ecb39ec97"
+				config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+
+		</tracing:with-correlation-id>
+
 
 		<error-handler>
 			<on-error-propagate enableNotifications="false"
@@ -94,6 +103,18 @@ output application/java
 					message="HTTP Connectivity - Message is not Acknowledged" />
 				<anypoint-mq:nack doc:name="Nack"
 					doc:id="1260c350-56b8-4d38-8847-2151830596b4"
+					config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
+			</on-error-propagate>
+			
+			<on-error-propagate enableNotifications="false"
+				logException="false" doc:name="On Error Propagate"
+				doc:id="03cd2dcd-b8d9-45a0-a5b7-e7f00cba45b3"
+				type="ANY">
+				<logger level="INFO" doc:name="Logger"
+					doc:id="b42812e4-37c5-4613-970e-0ee56bd4a04a"
+					message="Any Error - Message is not Acknowledged" />
+				<anypoint-mq:nack doc:name="Nack"
+					doc:id="796e0f5d-4d42-4a18-a1f6-78399ab1c74f"
 					config-ref="anypointMQConfig" ackToken="#[vars.ackToken]" />
 			</on-error-propagate>
 		</error-handler>

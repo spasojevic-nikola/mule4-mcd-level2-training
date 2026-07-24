@@ -45,6 +45,8 @@
 		
 		<!-- MQ Connectors --> 
 		<mq.version>4.0.21</mq.version>
+		
+		<tracing.version>1.2.1</tracing.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -148,6 +150,12 @@
 				<groupId>com.mulesoft.connectors</groupId>
 				<artifactId>anypoint-mq-connector</artifactId>
 				<version>${mq.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.mule.modules</groupId>
+				<artifactId>mule-tracing-module</artifactId>
+				<version>${tracing.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>

@@ -13,7 +13,9 @@
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
@@ -34,44 +36,30 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 		doc:id="6c601e74-08ca-4de3-bace-5e9059ea6885"
 		file="properties-${env}.yaml" />
 	<secure-properties:config
-		name="securePropertiesConfig"
-		doc:name="Secure Properties Config"
+		name="securePropertiesConfig" doc:name="Secure Properties Config"
 		doc:id="58ec295e-c99f-4bea-8d81-c2887a505565"
-		file="properties-${env}-secure.yaml"
-		key="${secure.key}">
+		file="properties-${env}-secure.yaml" key="${secure.key}">
 		<secure-properties:encrypt
 			algorithm="Blowfish" />
 	</secure-properties:config>
 	<configuration-properties
 		doc:name="Configuration properties"
-		doc:id="5f358154-45f0-489c-b6a5-eabb96c46bb5"
-		file="properties.yaml" />
+		doc:id="5f358154-45f0-489c-b6a5-eabb96c46bb5" file="properties.yaml" />
 
 	<http:listener-config name="apiHttpListenerConfig">
-		<http:listener-connection
-			host="0.0.0.0"
-			port="${http.port}"
-			protocol="HTTP" />
+		<http:listener-connection host="0.0.0.0"
+			port="${http.port}" protocol="HTTP" />
 	</http:listener-config>
-	<apikit:config
-		name="apiConfig"
-		api="${api.specification}"
-		outboundHeadersMapName="outboundHeaders"
+	<apikit:config name="apiConfig"
+		api="${api.specification}" outboundHeadersMapName="outboundHeaders"
 		httpStatusVarName="httpStatus" />
-	<api-gateway:autodiscovery
-		apiId="${api.id}"
-		ignoreBasePath="true"
-		doc:name="API Autodiscovery"
-		doc:id="57645b3a-f87e-49ed-b31d-a020889b355b"
-		flowRef="api-main" />
-	<tls:context
-		name="apiTlsContext"
-		doc:name="TLS Context"
+	<api-gateway:autodiscovery apiId="${api.id}"
+		ignoreBasePath="true" doc:name="API Autodiscovery"
+		doc:id="57645b3a-f87e-49ed-b31d-a020889b355b" flowRef="api-main" />
+	<tls:context name="apiTlsContext" doc:name="TLS Context"
 		doc:id="0b3f8c9e-fe60-465e-9a83-9c56d8f0ccbf">
-		<tls:key-store
-			type="${tls.keystore.type}"
-			path="${tls.keystore.path}"
-			alias="${tls.keystore.alias}"
+		<tls:key-store type="${tls.keystore.type}"
+			path="${tls.keystore.path}" alias="${tls.keystore.alias}"
 			keyPassword="${secure::tls.keystore.keyPassword}"
 			password="${secure::tls.keystore.password}" />
 	</tls:context>
@@ -80,37 +68,24 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 		doc:name="Super Heros Movies Data SAPI Config"
 		doc:id="e14bb385-6425-42b8-a39e-4bb01b6ca389"
 		property_host="ch2-super-movies-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io"
-		property_port="443"
-		property_basePath="/api/v1"
-		property_protocol="HTTPS"
-		property_responseTimeout="4000" />
+		property_port="443" property_basePath="/api/v1"
+		property_protocol="HTTPS" property_responseTimeout="4000" />
 	<super-heros-bio-data-sapi:config
 		name="superHerosBioDataSAPIConfig"
 		doc:name="Super Heros Bio Data SAPI Config"
 		doc:id="6e17ae0f-209a-4e92-b050-025bde9bb747"
 		property_host="ch2-super-biodata-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io"
-		property_port="443"
-		property_basePath="/api/v1"
-		property_protocol="HTTPS"
-		property_responseTimeout="4000" />
-	<os:object-store
-		name="oauthTokenObjectStore"
-		doc:name="Object store"
-		doc:id="00191788-6efc-4c72-a74a-9b4eb5621161"
-		persistent="true"
-		entryTtl="60"
-		entryTtlUnit="MINUTES"
-		expirationInterval="60"
-		expirationIntervalUnit="MINUTES" />
-	<http:request-config
-		name="bookingsDataByBID"
+		property_port="443" property_basePath="/api/v1"
+		property_protocol="HTTPS" property_responseTimeout="4000" />
+	<os:object-store name="oauthTokenObjectStore"
+		doc:name="Object store" doc:id="00191788-6efc-4c72-a74a-9b4eb5621161"
+		persistent="true" entryTtl="60" entryTtlUnit="MINUTES"
+		expirationInterval="60" expirationIntervalUnit="MINUTES" />
+	<http:request-config name="bookingsDataByBID"
 		doc:name="HTTP Request configuration"
-		doc:id="51e49c7c-c6e9-4910-bfcd-f37e06c6b9f2"
-		basePath="/booking">
-		<http:request-connection
-			protocol="HTTPS"
-			host="onlineman477-eval-prod.apigee.net"
-			port="443">
+		doc:id="51e49c7c-c6e9-4910-bfcd-f37e06c6b9f2" basePath="/booking">
+		<http:request-connection protocol="HTTPS"
+			host="onlineman477-eval-prod.apigee.net" port="443">
 			<http:authentication>
 				<oauth:client-credentials-grant-type
 					clientId="KZ24TpHNeppVOmwtKpD6jQAjnq4vrLG1"
@@ -122,32 +97,39 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 			</http:authentication>
 		</http:request-connection>
 	</http:request-config>
-	<os:object-store
-		name="bioDataObjectStore"
-		doc:name="Object store"
-		doc:id="edb509a7-2bc8-4d03-aa8a-1388f1231273"
-		persistent="true"
-		entryTtl="60"
-		entryTtlUnit="MINUTES"
-		expirationInterval="30"
-		expirationIntervalUnit="SECONDS" />
+	<os:object-store name="bioDataObjectStore"
+		doc:name="Object store" doc:id="edb509a7-2bc8-4d03-aa8a-1388f1231273"
+		persistent="true" entryTtl="60" entryTtlUnit="MINUTES"
+		expirationInterval="30" expirationIntervalUnit="SECONDS" />
 	<ee:object-store-caching-strategy
-		name="biodataCachingStrategy"
-		doc:name="Caching Strategy"
+		name="biodataCachingStrategy" doc:name="Caching Strategy"
 		doc:id="ca1b49a8-93ed-4a3e-8039-9e97438efca5"
-		keyGenerationExpression="#[vars.CID]"
-		objectStore="bioDataObjectStore" />
-	<vm:config name="vmConfigShowCancellation" doc:name="VM Config" doc:id="96cb1bba-eabb-4384-9d5d-6ea535f282ff" >
-		<vm:queues >
-			<vm:queue queueName="cancel-show-notifications-queue" queueType="PERSISTENT" maxOutstandingMessages="50" />
-			<vm:queue queueName="cancel-show-notifications-dlq" queueType="PERSISTENT" maxOutstandingMessages="50" />
+		keyGenerationExpression="#[vars.CID]" objectStore="bioDataObjectStore" />
+	<vm:config name="vmConfigShowCancellation"
+		doc:name="VM Config" doc:id="96cb1bba-eabb-4384-9d5d-6ea535f282ff">
+		<vm:queues>
+			<vm:queue queueName="cancel-show-notifications-queue"
+				queueType="PERSISTENT" maxOutstandingMessages="50" />
+			<vm:queue queueName="cancel-show-notifications-dlq"
+				queueType="PERSISTENT" maxOutstandingMessages="50" />
 		</vm:queues>
 	</vm:config>
-	<!-- only for demo purposes, Anypoint MQ NIJE dostupan po defaultu na free trial verziji -->
-	<anypoint-mq:config name="anypointMQConfig" doc:name="Anypoint MQ Config" doc:id="89c93ea9-0cf9-482f-886d-02c31f204f11" >
-		<anypoint-mq:connection clientId="${secure::mq.client.id}" clientSecret="${secure::mq.client.secret}" url="${secure::mq.url}"/>
-	</anypoint-mq:config>
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="e720226c-167a-4302-95ce-ac1d559d37ed" file="properties-apmq-secure.yaml" key="${secure.key.apmq}" >
-		<secure-properties:encrypt algorithm="Rijndael" mode="ECB" />
+
+	<secure-properties:config
+		name="Secure_Properties_Config" doc:name="Secure Properties Config"
+		doc:id="c1835e6d-68ea-4a90-b426-1d8386e51675"
+		file="properties-apmq-secure.yaml" key="${secure.key.apmq}">
+		<secure-properties:encrypt algorithm="AES"
+			mode="CBC" />
 	</secure-properties:config>
+
+	<!-- only for demo purposes, Anypoint MQ NIJE dostupan po defaultu na free trial verziji -->
+	<!-- Promeni sa ${secure::mq.client_id} na ${mq.client_id} -->
+	<anypoint-mq:config name="anypointMQConfig"
+		doc:name="Anypoint MQ Config"
+		doc:id="89c93ea9-0cf9-482f-886d-02c31f204f11">
+		<anypoint-mq:connection
+			clientId="${mq.client_id}"
+			clientSecret="${mq.client_secret}" url="${secure::mq.url}" />
+	</anypoint-mq:config>
 </mule>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing"
+	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
 	xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
 	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
@@ -8,15 +9,15 @@
 	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
 	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd
-http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd">
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
 
 	<flow name="get-biodata-by-cid"
 		doc:id="5597887e-f50e-43bc-ba08-dfb2beec0554">
@@ -131,6 +132,8 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 
 	<flow name="get-tickets-data-by-bid"
 		doc:id="0d4eb96a-38dc-41f3-9ccf-b756d1ecd95f">
+		<tracing:set-logging-variable doc:name="BID" doc:id="6e83f41d-9e9b-4baf-8b04-6d2ac1cca4e0" variableName="BID" value="#[vars.BID]"/>
+		<tracing:set-logging-variable doc:name="CID" doc:id="f61bfa4e-b529-422a-874d-0c42c57b0c58" variableName="CID" value="#[vars.CID]"/>
 		<logger level="INFO" doc:name="Log Correlation ID"
 			doc:id="0d27f5b0-fbe1-41a4-994e-401605e57d21"
 			message="#['\n****************************************\n' ++ 'Flow started with correlation id - ' ++ correlationId ++ '\n****************************************\n']" />
@@ -266,7 +269,11 @@ output application/java
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<anypoint-mq:publish doc:name="Publish to MQ" doc:id="15af2fcb-6d5d-4ab5-b0dd-f63accf30d0d" config-ref="anypointMQConfig" destination="${secure::mq.destination}" messageId="#[correlationId]"/>
+		<anypoint-mq:publish doc:name="Publish to MQ" doc:id="15af2fcb-6d5d-4ab5-b0dd-f63accf30d0d" config-ref="anypointMQConfig" destination="${secure::mq.destination}" messageId="#[correlationId]">
+			<anypoint-mq:properties ><![CDATA[{
+	"correlationId": corrleationId
+}]]></anypoint-mq:properties>
+		</anypoint-mq:publish>
 		<logger level="INFO" doc:name="Logger"
 			doc:id="92b1427b-18ec-4b71-b664-a0554fb7edc7"
 			message="Notifications Received" />

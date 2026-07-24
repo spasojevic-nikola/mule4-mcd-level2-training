@@ -8,31 +8,29 @@
 		will be append to the console, so you will see them in the mule_ee.log file. -->
 
 	<Appenders>
-		<RollingFile
-			name="file"
+		<RollingFile name="file"
 			fileName="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}super-tickets-papi.log"
 			filePattern="${sys:mule.home}${sys:file.separator}logs${sys:file.separator}super-tickets-papi-%i.log">
 			<PatternLayout
-				pattern="%-5p %d [%t] [processor: %X{processorPath}; event: %X{correlationId}] %c: %m%n" />
+				pattern="%-5p %d [%t] [%MDC] %c: %m%n" />
 			<SizeBasedTriggeringPolicy size="10 MB" />
 			<DefaultRolloverStrategy max="10" />
 		</RollingFile>
+		
+		<Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p %d [%t] [%MDC] %c: %m%n"/>
+        </Console>
 	</Appenders>
 
 	<Loggers>
-		<AsyncLogger
-			name="com.mulesoft.mule.runtime.cache"
+		<AsyncLogger name="com.mulesoft.mule.runtime.cache"
 			level="DEBUG" />
 		<!-- Http Logger shows wire traffic on DEBUG -->
 		<AsyncLogger
 			name="org.mule.service.http.impl.service.HttpMessageLogger"
 			level="DEBUG" />
-		<AsyncLogger
-			name="org.mule.service.http"
-			level="WARN" />
-		<AsyncLogger
-			name="org.mule.extension.http"
-			level="WARN" />
+		<AsyncLogger name="org.mule.service.http" level="WARN" />
+		<AsyncLogger name="org.mule.extension.http" level="WARN" />
 
 		<!-- Mule logger -->
 		<AsyncLogger
@@ -41,6 +39,7 @@
 
 		<AsyncRoot level="INFO">
 			<AppenderRef ref="file" />
+			<AppenderRef ref="Console"/>
 		</AsyncRoot>
 	</Loggers>
 

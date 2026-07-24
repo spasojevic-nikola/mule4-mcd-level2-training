@@ -12,3 +12,14 @@ api:
   callback: 
     #url: "https://localhost:8082/api/cancelShow" #change this when deploying to CloudHub to - https://${fullDomain}/api/cancelShow
     url: "https://${fullDomain}/api/cancelShow"
+    
+#ovo su demo kredencijali, Anypoint MQ NIJE dostupan na free trial organizaciji
+mq:
+  #url: '![BZVXCKxX1kyMYc+hXrTRBqKvEbwQ7YOmQ3QUuUV5DO/9stRyjUH2YX0vJG00YF6TdT/t1uMgoYGc=]'
+  #client_id: '![Cc9Bh0E9ibkQsSbufaDeTbMZvmqVzogX/mP/bgPwztLrTx2vsOlejg==]'
+  #client_secret: '![I69b0sXiB8ZyKqnHm/+FlMaf47soKuTqkuK7kp8exxd6RqZ7Z0Dbpw==]'
+  #destination: '![2/rA1WXN36dx9803DgitdA==]'
+  client_id: "prosledi-neki-id"
+  client_secret: "prosledi-neki-secret"
+  url: "https://mj-eu1.cloudhub.io/api/v1"
+  destination: "neka-destinacija"
