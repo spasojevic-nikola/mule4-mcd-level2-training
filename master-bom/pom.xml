@@ -47,6 +47,7 @@
 		<mq.version>4.0.21</mq.version>
 		
 		<tracing.version>1.2.1</tracing.version>
+		<validation.version>2.0.9</validation.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -156,6 +157,18 @@
 				<groupId>org.mule.modules</groupId>
 				<artifactId>mule-tracing-module</artifactId>
 				<version>${tracing.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.mule.modules</groupId>
+				<artifactId>mule-validation-module</artifactId>
+				<version>${validation.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.mule.modules</groupId>
+				<artifactId>mule-validation-module</artifactId>
+				<version>${validation.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>
