@@ -48,6 +48,7 @@
 		
 		<tracing.version>1.2.1</tracing.version>
 		<validation.version>2.0.9</validation.version>
+		<json.module.version>2.5.7</json.module.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -169,6 +170,12 @@
 				<groupId>org.mule.modules</groupId>
 				<artifactId>mule-validation-module</artifactId>
 				<version>${validation.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>	
+			<dependency>
+				<groupId>org.mule.modules</groupId>
+				<artifactId>mule-json-module</artifactId>
+				<version>${json.module.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>

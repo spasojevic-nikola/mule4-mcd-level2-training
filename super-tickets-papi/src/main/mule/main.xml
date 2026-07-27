@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
 	xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing"
 	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
 	xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
@@ -8,8 +9,7 @@
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
 	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
 http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
@@ -18,7 +18,8 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd
 http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
 http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd
-http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
 
 	<flow name="get-biodata-by-cid"
 		doc:id="5597887e-f50e-43bc-ba08-dfb2beec0554">
@@ -247,6 +248,7 @@ var extractedMovies =
 			<validation:is-not-blank-string doc:name="Content-Type Is not blank string" doc:id="df9886a3-616e-4af4-8209-76115d535ef7" value="#[attributes.headers.'content-type']" message="Content-type is blank"/>
 			<validation:is-true doc:name="Content type should be JSON" doc:id="a02734b4-21f1-40a8-988b-47304a0a45f2" message="Content type is not application/json" expression="#[attributes.headers.'content-type' == 'application/json']"/>
 		</validation:all>
+		<json:validate-schema doc:name="Validate JSON Schema" doc:id="42295dad-af90-4281-a761-995bf1a63b02" schema="schema/CancelShowSchema.json"/>
 		<vm:publish queueName="cancel-show-notifications-queue"
 			doc:name="cancel-show-vm"
 			doc:id="e1178150-810f-4535-820a-3c56492b47d9"
@@ -255,7 +257,7 @@ var extractedMovies =
 			doc:id="6041ea70-0f3e-46c1-84a8-5c761a50d95f"
 			message="Show Cancel Notifications" />
 		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ebdf5920-cc3a-4fe2-b3a6-951b2ea678a9" type="VALIDATION:MULTIPLE">
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ebdf5920-cc3a-4fe2-b3a6-951b2ea678a9" type="JSON:SCHEMA_NOT_HONOURED, VALIDATION:MULTIPLE">
 				<!-- this variable is if bad request type is sent by client. so it should be 400 -->
 				<set-variable value="400" doc:name="httpStatusCode"
 	doc:id="cea9fa31-97c1-4b56-b34c-8e3fbd14da46"
@@ -298,7 +300,7 @@ output application/java
 		</ee:transform>
 		<anypoint-mq:publish doc:name="Publish to MQ" doc:id="15af2fcb-6d5d-4ab5-b0dd-f63accf30d0d" config-ref="anypointMQConfig" destination="${secure::mq.destination}" messageId="#[correlationId]">
 			<anypoint-mq:properties ><![CDATA[{
-	"correlationId": corrleationId
+	"correlationId": correlationId
 }]]></anypoint-mq:properties>
 		</anypoint-mq:publish>
 		<logger level="INFO" doc:name="Logger"
