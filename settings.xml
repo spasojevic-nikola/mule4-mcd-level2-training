@@ -48,6 +48,20 @@
 				</repository>
 			</repositories>
 		</profile>
+		<profile>
+			<id>Mule</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>mulesoft-releases</id>
+					<name>MuleSoft Repository</name>
+					<url>http://repository.mulesoft.org/releases/</url>
+					<layout>default</layout>
+				</repository>
+			</repositories>
+		</profile>
 	</profiles>
 	<activeProfiles>
 		<activeProfile>Mule</activeProfile>
