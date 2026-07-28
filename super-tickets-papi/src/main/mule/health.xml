@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing"
+	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+	xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:super-heros-bio-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi"
+	xmlns:super-heros-movies-data-sapi="http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi http://www.mulesoft.org/schema/mule/super-heros-movies-data-sapi/current/mule-super-heros-movies-data-sapi.xsd
+http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi http://www.mulesoft.org/schema/mule/super-heros-bio-data-sapi/current/mule-super-heros-bio-data-sapi.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+	<flow name="api-liveness-flow"
+		doc:id="5beefb4b-37ea-452e-8fca-624b6e65bf23">
+		<http:listener doc:name="Listener /live"
+			doc:id="2743cc2a-8a94-4391-92c4-47462360c1ed"
+			config-ref="apiHttpListenerConfig" path="/live">
+			<http:error-response >
+				<http:body ><![CDATA[#[DEAD]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-payload value="LIVE" doc:name="LIVE"
+			doc:id="48f1856b-b531-42cf-a625-36c0ed08c15a" />
+	</flow>
+	<flow name="api-readiness-flow"
+		doc:id="9dc25635-bd83-4b22-9420-77620202515f">
+		<http:listener doc:name="Listener"
+			doc:id="57987657-65dc-41c4-ba75-d5b8c37a1a36"
+			config-ref="apiHttpListenerConfig" path="/ready">
+			<http:response>
+				<http:body><![CDATA[READY]]></http:body>
+			</http:response>
+			<http:error-response >
+				<http:body ><![CDATA[#[DEAD]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<flow-ref doc:name="dependency-liveness-status" doc:id="6715d92c-4352-47d8-8b0d-97991f89db3d" name="dependency-liveness-status"/>
+		<set-payload value="READY" doc:name="READY"
+			doc:id="f0acb457-e775-4b20-8b19-a5f2588b8da4" />
+	</flow>
+	<sub-flow name="dependency-liveness-status"
+		doc:id="f9f63c3a-0477-4f53-994d-d0062527f423">
+		<http:request method="GET"
+			doc:name="Liveness - Super Movies SAPI"
+			doc:id="db23b548-a8fc-43d7-936e-4dbad0c7f3f0"
+			url="https://ch2-super-movies-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live"
+			responseTimeout="5000">
+			<http:response-validator>
+				<http:success-status-code-validator
+					values="200..399" /> <!-- any status code from 200 to 399 is accepted as a success (just for demo 
+					purposes) -->
+			</http:response-validator>
+		</http:request>
+		<http:request method="GET"
+			doc:name="Liveness - Super BioData SAPI"
+			doc:id="077214bd-5846-4c65-b17c-1f33f9d15f2d"
+			url="https://ch2-super-biodata-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live"
+			responseTimeout="5000">
+			<http:response-validator>
+				<http:success-status-code-validator
+					values="200..399" />
+			</http:response-validator>
+		</http:request>
+		<!--  Ovaj moram da zakomentarisem jer ja nemam taj apigee rest servis pa proveravam samo ova dva sistemska	-->
+		<!-- [STUDIO:"Liveness - Booking REST API"]<http:request method="GET"
+			doc:name="Liveness - Booking REST API"
+			doc:id="5292a365-4870-4adc-bda2-960ca5afad51" responseTimeout="5000"
+			url="https://onlineman477-eval-prod.apigee.net/booking/live">
+			<http:response-validator>
+				<http:success-status-code-validator
+					values="200..399" />
+			</http:response-validator>
+		</http:request> [STUDIO] -->
+	</sub-flow>
+
+</mule>
