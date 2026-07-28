@@ -24,34 +24,6 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
-	<flow name="api-liveness-flow"
-		doc:id="5beefb4b-37ea-452e-8fca-624b6e65bf23">
-		<http:listener doc:name="Listener /live"
-			doc:id="2743cc2a-8a94-4391-92c4-47462360c1ed"
-			config-ref="apiHttpListenerConfig" path="/live">
-			<http:error-response >
-				<http:body ><![CDATA[#[DEAD]]]></http:body>
-			</http:error-response>
-		</http:listener>
-		<set-payload value="LIVE" doc:name="LIVE"
-			doc:id="48f1856b-b531-42cf-a625-36c0ed08c15a" />
-	</flow>
-	<flow name="api-readiness-flow"
-		doc:id="9dc25635-bd83-4b22-9420-77620202515f">
-		<http:listener doc:name="Listener"
-			doc:id="57987657-65dc-41c4-ba75-d5b8c37a1a36"
-			config-ref="apiHttpListenerConfig" path="/ready">
-			<http:response>
-				<http:body><![CDATA[READY]]></http:body>
-			</http:response>
-			<http:error-response >
-				<http:body ><![CDATA[#[DEAD]]]></http:body>
-			</http:error-response>
-		</http:listener>
-		<flow-ref doc:name="dependency-liveness-status" doc:id="6715d92c-4352-47d8-8b0d-97991f89db3d" name="dependency-liveness-status"/>
-		<set-payload value="READY" doc:name="READY"
-			doc:id="f0acb457-e775-4b20-8b19-a5f2588b8da4" />
-	</flow>
 	<sub-flow name="dependency-liveness-status"
 		doc:id="f9f63c3a-0477-4f53-994d-d0062527f423">
 		<http:request method="GET"
