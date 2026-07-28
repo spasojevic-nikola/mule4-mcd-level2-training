@@ -24,6 +24,9 @@ http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+	<import doc:name="Import"
+		doc:id="cd0a1036-e213-4d9c-81cb-b3eafb7d8c06"
+		file="health-library.xml" />
 	<sub-flow name="dependency-liveness-status"
 		doc:id="f9f63c3a-0477-4f53-994d-d0062527f423">
 		<http:request method="GET"

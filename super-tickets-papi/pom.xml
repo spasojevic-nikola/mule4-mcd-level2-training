@@ -119,7 +119,6 @@
 		<dependency>
 			<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 			<artifactId>common-application-resources</artifactId>
-			<version>1.0.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
