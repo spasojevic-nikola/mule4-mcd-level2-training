@@ -1,0 +1,491 @@
+{
+  "name": "liveness-check",
+  "description": "This module relies in runtime provided components",
+  "version": "4.0.0",
+  "vendor": "MuleSoft",
+  "supportedJavaVersions": [
+    "1.8",
+    "11",
+    "17"
+  ],
+  "category": "COMMUNITY",
+  "xmlDsl": {
+    "prefix": "liveness-check",
+    "namespace": "http://www.mulesoft.org/schema/mule/liveness-check",
+    "schemaLocation": "http://www.mulesoft.org/schema/mule/liveness-check/current/mule-liveness-check.xsd",
+    "schemaVersion": "4.0.0",
+    "xsdFileName": "mule-liveness-check.xsd"
+  },
+  "resources": [],
+  "subTypes": [],
+  "privilegedPackages": [],
+  "privilegedArtifacts": [],
+  "externalLibraries": [],
+  "importedTypes": [],
+  "configurations": [],
+  "operations": [
+    {
+      "blocking": true,
+      "executionType": "CPU_LITE",
+      "output": {
+        "type": {
+          "format": "java",
+          "type": "String"
+        },
+        "hasDynamicType": false,
+        "description": "Payload\u0027s output",
+        "modelProperties": {}
+      },
+      "outputAttributes": {
+        "type": {
+          "format": "java",
+          "type": "Void"
+        },
+        "hasDynamicType": false,
+        "description": "",
+        "modelProperties": {}
+      },
+      "transactional": false,
+      "requiresConnection": false,
+      "supportsStreaming": false,
+      "notifications": [],
+      "nestedComponents": [],
+      "errors": [
+        "LIVENESS-CHECK:PARSING",
+        "LIVENESS-CHECK:TIMEOUT",
+        "LIVENESS-CHECK:SECURITY",
+        "LIVENESS-CHECK:CONNECTIVITY",
+        "LIVENESS-CHECK:BAD_REQUEST",
+        "LIVENESS-CHECK:UNAUTHORIZED",
+        "LIVENESS-CHECK:FORBIDDEN",
+        "LIVENESS-CHECK:METHOD_NOT_ALLOWED",
+        "LIVENESS-CHECK:NOT_FOUND",
+        "LIVENESS-CHECK:NOT_ACCEPTABLE",
+        "LIVENESS-CHECK:UNSUPPORTED_MEDIA_TYPE",
+        "LIVENESS-CHECK:TOO_MANY_REQUESTS",
+        "LIVENESS-CHECK:INTERNAL_SERVER_ERROR",
+        "LIVENESS-CHECK:SERVICE_UNAVAILABLE",
+        "LIVENESS-CHECK:RETRY_EXHAUSTED"
+      ],
+      "semanticTerms": [],
+      "visibility": "PUBLIC",
+      "stereotype": {
+        "type": "ENDPOINT-LIVENESS-CHECK",
+        "namespace": "LIVENESS-CHECK",
+        "parent": {
+          "type": "PROCESSOR",
+          "namespace": "LIVENESS-CHECK",
+          "parent": {
+            "type": "PROCESSOR",
+            "namespace": "MULE"
+          }
+        }
+      },
+      "parameterGroupModels": [
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": true,
+              "isConfigOverride": false,
+              "isComponentId": false,
+              "fieldValueProviderModels": [],
+              "expressionSupport": "SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": false,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 1,
+                "tabName": "General"
+              },
+              "allowedStereotypeModels": [],
+              "semanticTerms": [],
+              "name": "url",
+              "displayModel": {
+                "displayName": "URL"
+              },
+              "description": "",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "Number"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "isComponentId": false,
+              "fieldValueProviderModels": [],
+              "expressionSupport": "SUPPORTED",
+              "defaultValue": "1000",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": false,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 2,
+                "tabName": "Response"
+              },
+              "allowedStereotypeModels": [],
+              "semanticTerms": [],
+              "name": "responseTimeout",
+              "displayModel": {
+                "displayName": "Response Timeout"
+              },
+              "description": "",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 1
+          },
+          "showInDsl": false,
+          "name": "General",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "isComponentId": false,
+              "fieldValueProviderModels": [],
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": false,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 3,
+                "tabName": "Advanced"
+              },
+              "allowedStereotypeModels": [],
+              "semanticTerms": [],
+              "name": "target",
+              "displayModel": {
+                "displayName": "Target Variable"
+              },
+              "description": "The name of a variable on which the operation\u0027s output will be placed",
+              "modelProperties": {}
+            },
+            {
+              "type": {
+                "format": "java",
+                "type": "String"
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "isComponentId": false,
+              "fieldValueProviderModels": [],
+              "expressionSupport": "REQUIRED",
+              "defaultValue": "#[payload]",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": false,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 4,
+                "tabName": "Advanced"
+              },
+              "allowedStereotypeModels": [],
+              "semanticTerms": [],
+              "name": "targetValue",
+              "displayModel": {
+                "displayName": "Target Value"
+              },
+              "description": "An expression that will be evaluated against the operation\u0027s output and the outcome of that expression will be stored in the target variable",
+              "modelProperties": {}
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 2
+          },
+          "showInDsl": false,
+          "name": "Output",
+          "description": "",
+          "modelProperties": {}
+        },
+        {
+          "parameters": [
+            {
+              "type": {
+                "format": "java",
+                "type": "Array",
+                "annotations": {
+                  "infrastructureType": {},
+                  "description": {
+                    "value": "Determines that an error thrown by this operation should be mapped to another"
+                  },
+                  "typeDsl": {
+                    "allowInlineDefinition": true,
+                    "allowTopLevelDefinition": false
+                  }
+                },
+                "item": {
+                  "type": "Object",
+                  "annotations": {
+                    "typeId": "errorMapping",
+                    "infrastructureType": {}
+                  },
+                  "fields": [
+                    {
+                      "key": {
+                        "name": "source"
+                      },
+                      "model": {
+                        "format": {
+                          "id": "text",
+                          "label": "Text",
+                          "validMimeTypes": [
+                            "text/plain"
+                          ]
+                        },
+                        "type": "String",
+                        "annotations": {
+                          "typeId": "errorTypeMatcher",
+                          "enum": {
+                            "type": "[Ljava.lang.String;",
+                            "values": [
+                              "ANY",
+                              "REDELIVERY_EXHAUSTED",
+                              "TRANSFORMATION",
+                              "EXPRESSION",
+                              "SECURITY",
+                              "CLIENT_SECURITY",
+                              "SERVER_SECURITY",
+                              "ROUTING",
+                              "CONNECTIVITY",
+                              "RETRY_EXHAUSTED",
+                              "TIMEOUT"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "key": {
+                        "name": "target",
+                        "required": "true"
+                      },
+                      "model": {
+                        "format": {
+                          "id": "text",
+                          "label": "Text",
+                          "validMimeTypes": [
+                            "text/plain"
+                          ]
+                        },
+                        "type": "String",
+                        "annotations": {
+                          "typeId": "errorTypeDefinition"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "hasDynamicType": false,
+              "required": false,
+              "isConfigOverride": false,
+              "isComponentId": false,
+              "fieldValueProviderModels": [],
+              "expressionSupport": "NOT_SUPPORTED",
+              "role": "BEHAVIOUR",
+              "dslConfiguration": {
+                "allowsInlineDefinition": true,
+                "allowsReferences": false,
+                "allowTopLevelDefinition": false
+              },
+              "layoutModel": {
+                "password": false,
+                "text": false,
+                "query": false,
+                "order": 5,
+                "tabName": "Error Mapping"
+              },
+              "allowedStereotypeModels": [],
+              "semanticTerms": [],
+              "name": "errorMappings",
+              "description": "Set of error mappings",
+              "modelProperties": {
+                "org.mule.runtime.extension.api.property.QNameModelProperty": {
+                  "value": {
+                    "namespaceURI": "http://www.mulesoft.org/schema/mule/core",
+                    "localPart": "error-mappings",
+                    "prefix": "mule"
+                  }
+                },
+                "sinceMuleVersion": {
+                  "version": "4.4.0"
+                },
+                "org.mule.runtime.extension.api.property.InfrastructureParameterModelProperty": {
+                  "sequence": 12
+                }
+              }
+            }
+          ],
+          "exclusiveParametersModels": [],
+          "layoutModel": {
+            "password": false,
+            "text": false,
+            "query": false,
+            "order": 3
+          },
+          "showInDsl": false,
+          "name": "Error Mappings",
+          "description": "",
+          "modelProperties": {}
+        }
+      ],
+      "name": "endpoint-liveness-check",
+      "displayModel": {},
+      "description": "Test Liveness of the Endpoint",
+      "modelProperties": {},
+      "kind": "operation"
+    }
+  ],
+  "functions": [],
+  "constructs": [],
+  "connectionProviders": [],
+  "messageSources": [],
+  "artifactCoordinates": {
+    "artifact id": "liveness-check",
+    "group id": "6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc",
+    "version": "1.0.0-SNAPSHOT"
+  },
+  "notifications": [],
+  "errors": [
+    {
+      "error": "LIVENESS-CHECK:PARSING",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:TIMEOUT",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:SECURITY",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:CONNECTIVITY",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:BAD_REQUEST",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:UNAUTHORIZED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:FORBIDDEN",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:METHOD_NOT_ALLOWED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:NOT_FOUND",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:NOT_ACCEPTABLE",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:UNSUPPORTED_MEDIA_TYPE",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:TOO_MANY_REQUESTS",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:INTERNAL_SERVER_ERROR",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:SERVICE_UNAVAILABLE",
+      "parent": "MULE:ANY",
+      "handleable": true
+    },
+    {
+      "error": "LIVENESS-CHECK:RETRY_EXHAUSTED",
+      "parent": "MULE:ANY",
+      "handleable": true
+    }
+  ],
+  "modelProperties": {
+    "org.mule.runtime.extension.api.property.XmlExtensionModelProperty": {
+      "namespacesDependencies": [
+        "http://www.mulesoft.org/schema/mule/http",
+        "http://www.mulesoft.org/schema/mule/module",
+        "http://www.mulesoft.org/schema/mule/tls",
+        "http://www.mulesoft.org/schema/mule/sockets",
+        "http://www.mulesoft.org/schema/mule/core"
+      ]
+    }
+  },
+  "types": []
+}

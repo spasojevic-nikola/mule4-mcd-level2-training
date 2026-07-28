@@ -50,16 +50,13 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 					values="200..399" />
 			</http:response-validator>
 		</http:request>
-		<!--  Ovaj moram da zakomentarisem jer ja nemam taj apigee rest servis pa proveravam samo ova dva sistemska	-->
-		<!-- [STUDIO:"Liveness - Booking REST API"]<http:request method="GET"
-			doc:name="Liveness - Booking REST API"
-			doc:id="5292a365-4870-4adc-bda2-960ca5afad51" responseTimeout="5000"
-			url="https://onlineman477-eval-prod.apigee.net/booking/live">
-			<http:response-validator>
-				<http:success-status-code-validator
-					values="200..399" />
-			</http:response-validator>
-		</http:request> [STUDIO] -->
+		<!-- Ovaj moram da zakomentarisem jer ja nemam taj apigee rest servis pa 
+			proveravam samo ova dva sistemska -->
+		<!-- [STUDIO:"Liveness - Booking REST API"]<http:request method="GET" doc:name="Liveness 
+			- Booking REST API" doc:id="5292a365-4870-4adc-bda2-960ca5afad51" responseTimeout="5000" 
+			url="https://onlineman477-eval-prod.apigee.net/booking/live"> <http:response-validator> 
+			<http:success-status-code-validator values="200..399" /> </http:response-validator> 
+			</http:request> [STUDIO] -->
 	</sub-flow>
 
 </mule>
