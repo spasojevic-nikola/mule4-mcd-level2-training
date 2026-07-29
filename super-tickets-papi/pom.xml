@@ -121,6 +121,11 @@
 			<artifactId>common-application-resources</artifactId>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
+			<artifactId>liveness-check</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
 	</dependencies>
 
 	<repositories>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+<mule
+	xmlns:liveness-check="http://www.mulesoft.org/schema/mule/liveness-check"
+	xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
 	xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing"
 	xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
@@ -23,40 +25,30 @@ http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/
 http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
 http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
-http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/liveness-check http://www.mulesoft.org/schema/mule/liveness-check/current/mule-liveness-check.xsd">
 	<import doc:name="Import"
 		doc:id="cd0a1036-e213-4d9c-81cb-b3eafb7d8c06"
 		file="health-library.xml" />
 	<sub-flow name="dependency-liveness-status"
 		doc:id="f9f63c3a-0477-4f53-994d-d0062527f423">
-		<http:request method="GET"
+
+		<liveness-check:endpoint-liveness-check
 			doc:name="Liveness - Super Movies SAPI"
-			doc:id="db23b548-a8fc-43d7-936e-4dbad0c7f3f0"
-			url="https://ch2-super-movies-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live"
-			responseTimeout="5000">
-			<http:response-validator>
-				<http:success-status-code-validator
-					values="200..399" /> <!-- any status code from 200 to 399 is accepted as a success (just for demo 
-					purposes) -->
-			</http:response-validator>
-		</http:request>
-		<http:request method="GET"
+			doc:id="f570b989-e1ad-4bd9-827c-c8a147e73d0a" responseTimeout="5000"
+			url="https://ch2-super-movies-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live" />
+
+		<liveness-check:endpoint-liveness-check
 			doc:name="Liveness - Super BioData SAPI"
-			doc:id="077214bd-5846-4c65-b17c-1f33f9d15f2d"
-			url="https://ch2-super-biodata-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live"
-			responseTimeout="5000">
-			<http:response-validator>
-				<http:success-status-code-validator
-					values="200..399" />
-			</http:response-validator>
-		</http:request>
+			doc:id="4c28216d-3ddd-4e0d-b6d6-4b780aa4e71f" responseTimeout="5000"
+			url="https://ch2-super-biodata-sapi-prod-dt7gx8.2ky31l-1.deu-c1.eu1.cloudhub.io/live" />
+
 		<!-- Ovaj moram da zakomentarisem jer ja nemam taj apigee rest servis pa 
 			proveravam samo ova dva sistemska -->
-		<!-- [STUDIO:"Liveness - Booking REST API"]<http:request method="GET" doc:name="Liveness 
-			- Booking REST API" doc:id="5292a365-4870-4adc-bda2-960ca5afad51" responseTimeout="5000" 
-			url="https://onlineman477-eval-prod.apigee.net/booking/live"> <http:response-validator> 
-			<http:success-status-code-validator values="200..399" /> </http:response-validator> 
-			</http:request> [STUDIO] -->
-	</sub-flow>
+		<!-- [STUDIO:"Liveness - Booking REST API"]<liveness-check:endpoint-liveness-check 
+			doc:name="Liveness - Booking REST API" doc:id="a349b1d4-da07-462d-8afc-e62f3c57dd46" 
+			responseTimeout="5000" url="https://onlineman477-eval-prod.apigee.net/booking/live" 
+			/> [STUDIO] -->
 
+	</sub-flow>
 </mule>

@@ -17,5 +17,5 @@
     "id": "mule",
     "attributes": {}
   },
-  "minMuleVersion": "4.6.30"
+  "minMuleVersion": "4.6.1"
 }

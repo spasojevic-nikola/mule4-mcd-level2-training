@@ -11,8 +11,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<!-- Runtime -->
-		<app.runtime>4.6.30</app.runtime>
-		<muleVersion>4.6.30:5-java17</muleVersion>
+		<app.runtime>4.6.1</app.runtime>
+		<muleVersion>4.6.1</muleVersion>
 		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
 
 		<!-- Maven plugins -->
@@ -43,13 +43,14 @@
 		<mongo.connector.version>6.3.7</mongo.connector.version>
 		<mongo.driver.version>3.12.14</mongo.driver.version>
 		
-		<!-- MQ Connectors --> 
+		<!-- MQ Connectors -->
 		<mq.version>4.0.21</mq.version>
 		
 		<tracing.version>1.2.1</tracing.version>
 		<validation.version>2.0.9</validation.version>
 		<json.module.version>2.5.7</json.module.version>
 		<common.application.resources.version>1.0.0</common.application.resources.version>
+		<liveness.check.version>1.0.0</liveness.check.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -177,6 +178,12 @@
 				<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
 				<artifactId>common-application-resources</artifactId>
 				<version>${common.application.resources.version}</version>
+				<classifier>mule-plugin</classifier>
+			</dependency>
+			<dependency>
+				<groupId>6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc</groupId>
+				<artifactId>liveness-check</artifactId>
+				<version>${liveness.check.version}</version>
 				<classifier>mule-plugin</classifier>
 			</dependency>
 		</dependencies>
