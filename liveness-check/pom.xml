@@ -15,12 +15,9 @@
 		<mule.version>4.6.1</mule.version>
 		<mule.extensions.maven.plugin.version>1.6.0</mule.extensions.maven.plugin.version>
 
-		<!-- <munit.version>2.1.0</munit.version>
-		<munit.extensions.maven.plugin.version>1.0.0-BETA</munit.extensions.maven.plugin.version>
-		<munit.input.directory>src/test/munit</munit.input.directory>
-		<munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory> 
-
-		<maven.resources.version>3.0.2</maven.resources.version> -->
+		<!-- <munit.version>2.1.0</munit.version> <munit.extensions.maven.plugin.version>1.0.0-BETA</munit.extensions.maven.plugin.version> 
+			<munit.input.directory>src/test/munit</munit.input.directory> <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory> 
+			<maven.resources.version>3.0.2</maven.resources.version> -->
 	</properties>
 
 
@@ -40,64 +37,26 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--MUnit Dependencies -->
-		<!-- <dependency>
-			<groupId>com.mulesoft.munit</groupId>
-			<artifactId>munit-runner</artifactId>
-			<version>${munit.version}</version>
-			<classifier>mule-plugin</classifier>
-			<scope>test</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.mulesoft.munit</groupId> <artifactId>munit-runner</artifactId> 
+			<version>${munit.version}</version> <classifier>mule-plugin</classifier> 
+			<scope>test</scope> </dependency> -->
 	</dependencies>
 
 	<build>
 		<pluginManagement>
-		<!--<plugins>
-				<plugin>
-					<groupId>com.mulesoft.munit</groupId>
-					<artifactId>munit-extensions-maven-plugin</artifactId>
-					<version>${munit.extensions.maven.plugin.version}</version>
-					<executions>
-						<execution>
-							<id>munit-extension-test</id>
-							<phase>integration-test</phase>
-							<goals>
-								<goal>test</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<dynamicPorts>
-							<dynamicPort>a.dynamic.port</dynamicPort>
-						</dynamicPorts>
-						<environmentVariables>
-							<MY_ENV>envVar</MY_ENV>
-						</environmentVariables>
-					</configuration>
-				</plugin> 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>${maven.resources.version}</version>
-					<executions>
-						<execution>
-							<id>copy-munit-resources</id>
-							<phase>process-test-resources</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${munit.output.directory}</outputDirectory>
-								<resources>
-									<resource>
-										<directory>${munit.input.directory}</directory>
-										<filtering>true</filtering>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin> 
-			</plugins>-->
+			<!--<plugins> <plugin> <groupId>com.mulesoft.munit</groupId> <artifactId>munit-extensions-maven-plugin</artifactId> 
+				<version>${munit.extensions.maven.plugin.version}</version> <executions> 
+				<execution> <id>munit-extension-test</id> <phase>integration-test</phase> 
+				<goals> <goal>test</goal> </goals> </execution> </executions> <configuration> 
+				<dynamicPorts> <dynamicPort>a.dynamic.port</dynamicPort> </dynamicPorts> 
+				<environmentVariables> <MY_ENV>envVar</MY_ENV> </environmentVariables> </configuration> 
+				</plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-resources-plugin</artifactId> 
+				<version>${maven.resources.version}</version> <executions> <execution> <id>copy-munit-resources</id> 
+				<phase>process-test-resources</phase> <goals> <goal>copy-resources</goal> 
+				</goals> <configuration> <outputDirectory>${munit.output.directory}</outputDirectory> 
+				<resources> <resource> <directory>${munit.input.directory}</directory> <filtering>true</filtering> 
+				</resource> </resources> </configuration> </execution> </executions> </plugin> 
+				</plugins> -->
 		</pluginManagement>
 
 		<plugins>
@@ -107,13 +66,33 @@
 				<version>${mule.extensions.maven.plugin.version}</version>
 				<extensions>true</extensions>
 			</plugin>
-			<!-- <plugin>
-				<groupId>com.mulesoft.munit</groupId>
-				<artifactId>munit-extensions-maven-plugin</artifactId>
-			</plugin> -->
+			<!-- <plugin> <groupId>com.mulesoft.munit</groupId> <artifactId>munit-extensions-maven-plugin</artifactId> 
+				</plugin> -->
+				
+			<plugin>
+			    <groupId>org.mule.tools.maven</groupId>
+			    <artifactId>exchange-mule-maven-plugin</artifactId>
+			    <version>0.0.23</version>
+			    <executions>
+			        <execution>
+			            <id>validate</id>
+			            <phase>validate</phase>
+			            <goals>
+			                <goal>exchange-pre-deploy</goal>
+			            </goals>
+			        </execution>
+			        <execution>
+			            <id>deploy</id>
+			            <phase>deploy</phase>
+			            <goals>
+			                <goal>exchange-deploy</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>
@@ -123,7 +102,40 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</pluginRepository>	
+		</pluginRepository>
 	</pluginRepositories>
 
+	<!-- If we want to deploy artifact to exchange -->
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id> <!-- id should map the server id from settings.xml, connected app that has 
+				permissions to view and contribute (deploy to exchange) -->
+			<name>Corporate Repository</name>
+			<url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
+	
+	<repositories>
+	    <repository>
+	        <id>Super-Organization-App</id>
+	        <name>Anypoint Exchange Organization</name>
+	        <url>https://maven.eu1.anypoint.mulesoft.com/api/v3/organizations/6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc/maven</url>
+	        <layout>default</layout>
+	    </repository>
+	
+	    <repository>
+	        <id>anypoint-exchange-v3</id>
+	        <name>Anypoint Exchange V3</name>
+	        <url>https://maven.eu1.anypoint.mulesoft.com/api/v3/maven</url>
+	        <layout>default</layout>
+	    </repository>
+	
+	    <repository>
+	        <id>MuleRepository</id>
+	        <name>MuleSoft Releases Repository</name>
+	        <url>https://repository.mulesoft.org/releases/</url>
+	        <layout>default</layout>
+	    </repository>
+	</repositories>
 </project>
