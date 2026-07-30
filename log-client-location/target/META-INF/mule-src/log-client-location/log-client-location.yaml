@@ -1,0 +1,30 @@
+id: log-client-location
+name: log-client-location
+description: Log client location custom policy
+category: Custom
+type: custom
+resourceLevelSupported: true
+encryptionSupported: false
+standalone: true
+requiredCharacteristics: []
+providedCharacteristics: []
+configuration:
+  - propertyName: logClientLocationEnabled
+    name: Log Client Location
+    description: If enabled, the policy will log client location
+    type: boolean
+    optional: true
+    dedfaultValue: false
+    sensitive: false
+    allowMultiple: false
+  - propertyName: ipAddress
+    name: Client IP Address
+    description: | 
+      Mule expression for extracting the IP Address of the Client Application.e.g. #[attributes.headers['x-forwarded-for']]
+    type: expression
+    optional: true
+    defaultValue: true
+    sensitive: false
+    allowMultiple: false
+    dependsOnKey: logClientLocationEnabled
+    dependsOnValue: true

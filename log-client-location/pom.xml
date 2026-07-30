@@ -14,7 +14,7 @@
     <packaging>mule-policy</packaging>
 
     <properties>
-        <mule.maven.plugin.version>3.3.6</mule.maven.plugin.version>
+        <mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
         <exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/6c9a40fa-be82-4dc5-9630-bcf6c6aabdfc/maven</exchange.url>
         <http.policy.transform.extension>3.1.0</http.policy.transform.extension>
     </properties>
