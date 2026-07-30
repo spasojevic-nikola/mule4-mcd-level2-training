@@ -56,6 +56,24 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
+	   <profile>
+		 <id>archetype-repository</id>
+		 <repositories>
+		   <repository>
+			 <id>archetype</id>
+			 <name>Mule Repository</name>
+			 <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+			 <releases>
+			   <enabled>true</enabled>
+			   <checksumPolicy>fail</checksumPolicy>
+			 </releases>
+			 <snapshots>
+			   <enabled>true</enabled>
+			   <checksumPolicy>warn</checksumPolicy>
+			 </snapshots>
+		   </repository>
+		 </repositories>
+	   </profile>
 	</profiles>
 	<activeProfiles>
 		<activeProfile>Mule</activeProfile>
