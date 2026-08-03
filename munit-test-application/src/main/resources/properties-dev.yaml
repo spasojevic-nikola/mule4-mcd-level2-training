@@ -1,0 +1,16 @@
+quotes:
+  protocol: 'https'
+  host: 'api.kanye.rest'
+  path: '/'
+  
+httpbin:
+  protocol: 'https'
+  #host: 'httpbin.org' #503 Service Temporarily Unavailable
+  host: 'postman-echo.com'
+  path: '/status'
+  
+reqres:
+  protocol: 'https'
+  host: 'reqres.in'
+  path: '/api/users'
+  api_key: 'free_user_3HPIGNrZ4I1AEk26xbB6NEC2ica'
