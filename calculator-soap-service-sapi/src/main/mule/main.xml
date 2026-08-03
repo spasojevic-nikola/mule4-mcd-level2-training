@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<mule
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:apikit-soap="http://www.mulesoft.org/schema/mule/apikit-soap"
@@ -10,28 +9,32 @@
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/apikit-soap http://www.mulesoft.org/schema/mule/apikit-soap/current/mule-apikit-soap.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
 
-	<http:listener-config name="api-httpListenerConfig">
-		<http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS">
+	<http:listener-config
+		name="api-httpListenerConfig">
+		<http:listener-connection host="0.0.0.0"
+			port="8082" protocol="HTTPS">
 			<tls:context>
+				<tls:trust-store path="server-truststore.p12"
+					password="superSecretPassword" type="pkcs12" />
 				<tls:key-store type="pkcs12" path="server-keystore.p12" alias="mule-server" keyPassword="superSecretPassword" password="superSecretPassword" />
 			</tls:context>
 		</http:listener-connection>
 	</http:listener-config>
 
-	<apikit-soap:config
-		httpStatusVarName="httpStatus"
-		name="soapkit-config"
-		port="CalculatorSoap"
-		service="Calculator"
+	<apikit-soap:config httpStatusVarName="httpStatus"
+		name="soapkit-config" port="CalculatorSoap" service="Calculator"
 		wsdlLocation="api/calculator.wsdl" />
 
 	<flow name="api-main">
-		<http:listener config-ref="api-httpListenerConfig" path="/Calculator/CalculatorSoap">
-			<http:response statusCode="#[attributes.additionalTransportData.statusCode default 200]">
+		<http:listener config-ref="api-httpListenerConfig"
+			path="/Calculator/CalculatorSoap">
+			<http:response
+				statusCode="#[attributes.additionalTransportData.statusCode default 200]">
 				<http:body>#[payload]</http:body>
 				<http:headers>#[attributes.protocolHeaders default {}]</http:headers>
 			</http:response>
-			<http:error-response statusCode="#[attributes.additionalTransportData.statusCode default 500]">
+			<http:error-response
+				statusCode="#[attributes.additionalTransportData.statusCode default 500]">
 				<http:body>#[payload]</http:body>
 				<http:headers>#[attributes.protocolHeaders default {}]</http:headers>
 			</http:error-response>
@@ -51,8 +54,11 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	</flow>
 
 	<flow name="Add:\soapkit-config">
-		<logger level="INFO" doc:name="Flow Started" doc:id="0bcf21bd-a9b8-4f93-8aa1-3fbff6eb835e" message="Flow Started" />
-		<logger level="INFO" doc:name="correlationId" doc:id="f6096e14-5ded-458b-a7c9-98725ad7f8ba" message="#['\n******************************************************\n '++ correlationId ++' \n******************************************************']" />
+		<logger level="INFO" doc:name="Flow Started"
+			doc:id="0bcf21bd-a9b8-4f93-8aa1-3fbff6eb835e" message="Flow Started" />
+		<logger level="INFO" doc:name="correlationId"
+			doc:id="f6096e14-5ded-458b-a7c9-98725ad7f8ba"
+			message="#['\n******************************************************\n '++ correlationId ++' \n******************************************************']" />
 		<ee:transform>
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -68,7 +74,8 @@ ns ns01 http://tempuri.org/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Flow End" doc:id="5c75235d-bf94-4c06-bec4-b2d781b14a5b" message="Flow End" />
+		<logger level="INFO" doc:name="Flow End"
+			doc:id="5c75235d-bf94-4c06-bec4-b2d781b14a5b" message="Flow End" />
 	</flow>
 
 </mule>

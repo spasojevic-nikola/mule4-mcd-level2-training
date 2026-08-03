@@ -16,7 +16,8 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 	<http:listener-config name="HTTP_Listener_config"
 		doc:name="HTTP Listener config"
 		doc:id="28ca5ca4-5e9b-435b-ac00-939a906a214a">
-		<http:listener-connection host="0.0.0.0" port="8087" />
+		<http:listener-connection host="0.0.0.0"
+			port="8087" />
 	</http:listener-config>
 
 	<wsc:config name="Web_Service_Consumer_Config"
@@ -24,42 +25,42 @@ http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/
 		doc:id="d9edd8c3-9894-43b6-ab09-490e99877904">
 		<wsc:connection
 			wsdlLocation="https://localhost:8082/Calculator/CalculatorSoap?wsdl"
-			service="Calculator" 
-			port="CalculatorSoap"
+			service="Calculator" port="CalculatorSoap"
 			address="https://localhost:8082/Calculator/CalculatorSoap">
 			<wsc:custom-transport-configuration>
-				<wsc:http-transport-configuration requesterConfig="HTTP_Request_configuration" />
+				<wsc:http-transport-configuration
+					requesterConfig="HTTP_Request_configuration" />
 			</wsc:custom-transport-configuration>
-			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
+			<wsc:web-service-security
+				actor="http://schemas.xmlsoap.org/soap/actor/next" />
 		</wsc:connection>
 	</wsc:config>
 
-	<http:request-config name="HTTP_Request_configuration">
-		<http:request-connection protocol="HTTPS" host="localhost" port="8082">
+	<http:request-config
+		name="HTTP_Request_configuration">
+		<http:request-connection protocol="HTTPS"
+			host="localhost" port="8082">
 			<tls:context>
-				<tls:trust-store insecure="true" />
+				<tls:trust-store path="client-truststore.p12"
+					password="superSecretPassword" type="pkcs12" />
+				<tls:key-store type="pkcs12"
+					path="client-keystore.p12" alias="mule-client"
+					keyPassword="superSecretPassword" password="superSecretPassword" />
 			</tls:context>
 		</http:request-connection>
 	</http:request-config>
 
-	<flow name="consume-soap-tls-papiFlow" doc:id="dc5ab80d-9740-4423-aab7-da3690f519c2">
-		<http:listener
-			doc:name="HTTP - 8087"
+	<flow name="consume-soap-tls-papiFlow"
+		doc:id="dc5ab80d-9740-4423-aab7-da3690f519c2">
+		<http:listener doc:name="HTTP - 8087"
 			doc:id="af8d44b4-fe25-46df-b2a8-d96f9b8935ce"
-			config-ref="HTTP_Listener_config"
-			path="/add" />
-		<logger
-			level="INFO"
-			doc:name="Flow Started"
-			doc:id="6f074214-0cc5-4189-95ab-50ad51e88783"
-			message="Flow Started" />
-		<logger
-			level="INFO"
-			doc:name="correlationId"
+			config-ref="HTTP_Listener_config" path="/add" />
+		<logger level="INFO" doc:name="Flow Started"
+			doc:id="6f074214-0cc5-4189-95ab-50ad51e88783" message="Flow Started" />
+		<logger level="INFO" doc:name="correlationId"
 			doc:id="25de77a0-ae8e-4acf-88af-cd6ab8ca9127"
 			message="#['\n******************************************************\n '++ correlationId ++' \n******************************************************']" />
-		<ee:transform
-			doc:name="Transform Request"
+		<ee:transform doc:name="Transform Request"
 			doc:id="324301a1-a445-4e7e-aee2-f0e061766d85">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -74,13 +75,10 @@ ns ns01 http://tempuri.org/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume
-			doc:name="Consume"
+		<wsc:consume doc:name="Consume"
 			doc:id="48f370b4-8aa7-406b-9e51-af8886866d6a"
-			config-ref="Web_Service_Consumer_Config"
-			operation="Add" />
-		<ee:transform
-			doc:name="Transform Response"
+			config-ref="Web_Service_Consumer_Config" operation="Add" />
+		<ee:transform doc:name="Transform Response"
 			doc:id="ef77bb6b-1b1f-4f50-9a2e-9c3676fed867">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -91,10 +89,7 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger
-			level="INFO"
-			doc:name="Flow End"
-			doc:id="ed146263-6976-4b42-a63d-65b1e5913879"
-			message="Flow End" />
+		<logger level="INFO" doc:name="Flow End"
+			doc:id="ed146263-6976-4b42-a63d-65b1e5913879" message="Flow End" />
 	</flow>
 </mule>
