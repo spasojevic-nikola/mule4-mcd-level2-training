@@ -55,8 +55,8 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 output application/json
 ---
 {
-	"name": if (payload.fname != null) (payload.fname ++ " " ++ payload.lname) else (payload.name default "Morpheus"),
-	"job": payload.role default payload.job default "Leader"
+	"name": if (payload.fname != null) (payload.fname ++ " " ++ payload.lname) else (payload.name default "Chuck Norris"),
+	"job": payload.role default payload.job default "ACTOR"
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
@@ -104,8 +104,8 @@ output application/json
 output application/json
 ---
 {
-	name: vars.reqres.name default "Morpheus",
-	job: upper(vars.reqres.job default "Leader"),
+	name: vars.reqres.name default "Chuck Norris",
+	job: upper(vars.reqres.job default "ACTOR"),
 	quote: vars.quotes.quote default "",
 	status: vars.statusCode as Number default 200
 }]]></ee:set-payload>

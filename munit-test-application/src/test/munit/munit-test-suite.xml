@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xsi:schemaLocation="
 		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="munit-test-suite.xml" />
-	<munit:test name="munit-test-success-path" doc:id="b4e4e2c2-46a6-4b3c-8fc3-7d55e48026a7" tags="UNIT-TEST" description="Testing the mashup flow for success responses">
+	<munit:test name="munit-test-success-path"
+		doc:id="b4e4e2c2-46a6-4b3c-8fc3-7d55e48026a7" tags="UNIT-TEST"
+		description="Testing the mashup flow for success responses">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="ReqRes Mock"
+				doc:id="82bfa730-94e4-4e0a-a946-b28ffcfb91f9"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="9059b5ac-5b2e-4087-9ea6-003cd3877845"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="reqres"
+							value="#[output application/json --- read(MunitTools::getResourceAsString('reqres-user-response.json'),'application/json')]"
+							mediaType="application/json" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Quotes Mock"
+				doc:id="db66539d-8df3-4c89-bb0e-e12a79791b97"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="d8da740f-b3b9-480d-9661-991bd7b41602"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="quotes"
+							value="#[output application/json --- read(MunitTools::getResourceAsString('quotes-response.json'),'application/json')]"
+							mediaType="application/json" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="HttpBin Mock"
+				doc:id="33fc7f10-bf54-4bcb-b647-b4b4d0765052"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="c7b3df16-0f4c-40cc-ac5e-a236f3b148ee"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="httpBin"
+							value="#['']" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
 		<munit:execution >
 			<munit:set-event doc:name="Set Payload and Query Param" doc:id="ccdab4c6-cfc4-443b-a5ab-ba7a40c13c08" >
 				<munit:payload value="#[output application/json --- read(MunitTools::getResourceAsString('reqres-user-request.json'),'application/json')]" />
@@ -19,6 +72,7 @@
 		<munit:validation >
 			<munit-tools:assert-that doc:name="Assert that Payload is NOT Null" doc:id="27d42290-1582-4106-a284-2cf0355e5261" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="Payload is null"/>
 			<munit-tools:assert-that doc:name="Assert that Payload Name field is Concatanated" doc:id="d0966f6e-0b55-45c0-8456-b32f4b723a0d" expression="#[payload.name]" is="#[MunitTools::equalTo('Chuck Norris')]" message="Payload name is not properly concatanated as expected"/>
+			<munit-tools:assert-that doc:name="Assert Mashup Response" doc:id="f58d24c5-6127-476f-9bf7-ff1646db8481" is="#[MunitTools::equalTo(read(MunitTools::getResourceAsString('mashup-response.json'),'application/json'))]" expression="#[payload]" message="Assertion failed in mashup response"/>
 		</munit:validation>
 	</munit:test>
 
