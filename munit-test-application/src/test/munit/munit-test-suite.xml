@@ -135,4 +135,19 @@
 				message="Assertion failed in mashup response" />
 		</munit:validation>
 	</munit:test>
+	<munit:test name="munit-testing-error" doc:id="b5df3c32-21df-4381-b818-47e16f869700" description="Testing a Flow with On-Error_propagate" tags="ERROR-TEST" expectedErrorType="APP:TESTING_FORBIDDEN">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Error" doc:id="36d151fb-113b-429b-a714-805014269a03" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c7b3df16-0f4c-40cc-ac5e-a236f3b148ee" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APP:TESTING_FORBIDDEN" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="c95085e0-cdd8-4831-8a5b-edb121f9273a" name="httpbin-flow"/>
+		</munit:execution>
+	</munit:test>
 </mule>
