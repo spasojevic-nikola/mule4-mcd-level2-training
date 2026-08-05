@@ -11,19 +11,19 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 
 	<http:listener-config name="HTTP_Listener_config"
 		doc:name="HTTP Listener config"
-		doc:id="6586c88a-7b1e-4833-a68d-9fa343e386b6">
+		doc:id="d78de82f-e3cb-4194-88f4-15a6f94d4c78">
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
 
 	<configuration-properties
 		doc:name="Configuration properties"
-		doc:id="410b3569-41b3-468b-a8e6-c099a948320c"
+		doc:id="450dd358-5965-4a10-b79e-806c14c18f85"
 		file="properties-${env}.yaml" />
 
-	<flow name="httpbin-flow" doc:id="3c641245-5d58-4a87-8875-ae06e9a52fce">
+	<flow name="httpbin-flow" doc:id="131b9519-4128-466c-af38-45c9d7e88ab3">
 		<http:request method="GET"
 			doc:name="HTTPBin - Status Code"
-			doc:id="4117aebf-0438-4600-b82a-d1022c659e9a"
+			doc:id="c7b3df16-0f4c-40cc-ac5e-a236f3b148ee"
 			url="${httpbin.protocol}://${httpbin.host}${httpbin.path}/{httpCode}"
 			target="httpBin">
 			<error-mapping sourceType="HTTP:FORBIDDEN" targetType="APP:TESTING_FORBIDDEN" />
@@ -36,33 +36,33 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<error-handler>
 			<on-error-propagate enableNotifications="true"
 				logException="true" doc:name="On Error Propagate"
-				doc:id="af0fe722-a09d-4811-92dd-341de3e00747"
+				doc:id="7b68cd35-f67f-4a7e-b245-2f8719578445"
 				type="APP:TESTING_FORBIDDEN">
 				<set-payload value="Testing Forbidden"
 					doc:name="Testing Forbidden"
-					doc:id="4e20d137-3440-4ace-a780-4282f19b7762" />
+					doc:id="525e5928-b7ce-4c50-8785-819eb9c6a3c7" />
 				<set-variable value="403" doc:name="httpStatusCode"
-					doc:id="2a20808d-ed60-4390-bb96-88006a1d03c6"
+					doc:id="a97cd885-d946-45c6-a515-8f4c2be280b7"
 					variableName="httpStatusCode" />
 			</on-error-propagate>
 		</error-handler>
 	</flow>
 
-	<flow name="reqres-flow" doc:id="35d77df7-f54e-4178-8168-add6f638c32e">
-		<ee:transform doc:name="Prepare ReqRes Payload" doc:id="a416b2cd-8a6b-4552-bdcb-fd643d6f52d9">
+	<flow name="reqres-flow" doc:id="2f1d2afa-676e-4a16-9b75-c3b7ef170376">
+		<ee:transform doc:name="Prepare ReqRes Payload" doc:id="31524f15-8f1f-4d46-8c0e-c87f552f5156">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-	"name": payload.name default "Morpheus",
-	"job": payload.job default "Leader"
+	"name": if (payload.fname != null) (payload.fname ++ " " ++ payload.lname) else (payload.name default "Morpheus"),
+	"job": payload.role default payload.job default "Leader"
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<http:request method="POST"
 			doc:name="ReqRes - Create User API"
-			doc:id="8b63a174-a66b-4a86-8056-afd532edd67b"
+			doc:id="9059b5ac-5b2e-4087-9ea6-003cd3877845"
 			url="${reqres.protocol}://${reqres.host}${reqres.path}"
 			target="reqres">
 			<http:headers><![CDATA[#[{
@@ -72,16 +72,16 @@ output application/json
 		</http:request>
 	</flow>
 
-	<flow name="quotes-flow" doc:id="7eb81fda-6a2d-47f2-babf-d72ed4caad4c">
+	<flow name="quotes-flow" doc:id="4dff6736-9ca7-4858-ba77-0c2b2a1d3eea">
 		<http:request method="GET" doc:name="Quotes - Random"
-			doc:id="41a5256a-5eba-4acc-b124-f9e0d447f239"
+			doc:id="d8da740f-b3b9-480d-9661-991bd7b41602"
 			url="${quotes.protocol}://${quotes.host}${quotes.path}"
 			target="quotes" />
 	</flow>
 
-	<flow name="mashup-flow" doc:id="d2d6855f-2859-4b27-ae82-65b6b63dba27">
+	<flow name="mashup-flow" doc:id="2f236fdd-ec81-4882-9c8b-4fa38d99f348">
 		<http:listener doc:name="Listener"
-			doc:id="bf90591c-8f13-4800-8c85-42d8bdec67ef"
+			doc:id="f2e8ffc9-e811-40c4-be1d-1d523a8965e0"
 			config-ref="HTTP_Listener_config" path="/testing">
 			<http:error-response statusCode="#[vars.httpStatusCode default 500]">
 				<http:body><![CDATA[#[payload]]]></http:body>
@@ -89,22 +89,22 @@ output application/json
 		</http:listener>
 		<set-variable
 			value="#[attributes.queryParams.statusCode default '200']" doc:name="StatusCode"
-			doc:id="49c6f0ed-2137-4102-80e0-bd4c69baa41b"
+			doc:id="5b8fb8eb-a9d4-4f5c-9100-a8fcfaf45568"
 			variableName="statusCode" />
 		<flow-ref doc:name="reqres-flow"
-			doc:id="b0f6e9e0-d458-4e10-a38c-29578da98cc6" name="reqres-flow" />
+			doc:id="41dc9063-b5aa-41fb-b790-d88faaa19b57" name="reqres-flow" />
 		<flow-ref doc:name="quotes-flow"
-			doc:id="d410e85d-9e97-4b26-9e58-24238e795214" name="quotes-flow" />
+			doc:id="98bb763f-f272-414d-bc8e-d323811e98cf" name="quotes-flow" />
 		<flow-ref doc:name="httpbin-flow"
-			doc:id="a5e62b78-e46a-4359-b92f-8fbd43eb159c" name="httpbin-flow" />
+			doc:id="5b3bd207-a525-4b99-a48c-6cf3a9c71742" name="httpbin-flow" />
 		<ee:transform doc:name="Final Response"
-			doc:id="4e6e58ce-6d5e-42ed-923c-6b9e8f5932a6">
+			doc:id="3c12069c-59ae-43c1-ba8c-91f8f34b5e2a">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
-	name: (vars.reqres.name default "Morpheus"),
+	name: vars.reqres.name default "Morpheus",
 	job: upper(vars.reqres.job default "Leader"),
 	quote: vars.quotes.quote default "",
 	status: vars.statusCode as Number default 200
