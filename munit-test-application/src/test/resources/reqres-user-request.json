@@ -1,1 +1,4 @@
-{"fname": "Chuck","lname": "Norris","role": "Actor"}
+{
+  "name":"Chuck Norris",
+  "job":"Actor"
+}

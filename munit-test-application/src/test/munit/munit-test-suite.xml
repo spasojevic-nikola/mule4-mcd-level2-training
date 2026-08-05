@@ -61,15 +61,65 @@
 					</munit-tools:variables>
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy - ReqRes"
+				doc:id="ad1c067b-c2ea-4560-a1c7-eb276c8e6a7c"
+				processor="http:request">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="9059b5ac-5b2e-4087-9ea6-003cd3877845"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call>
+					<munit-tools:assert-that
+						doc:name="Assert Input Payload"
+						doc:id="6e9fb1e0-8c8f-43ab-ba99-88737ac3abcc"
+						is="#[MunitTools::equalTo(read(MunitTools::getResourceAsString('reqres-user-request.json'), 'application/json'))]"
+						expression="#[payload]"
+						message="Spy Failed - No Input Payload Found" />
+				</munit-tools:before-call>
+				<munit-tools:after-call>
+					<munit-tools:assert-that
+						doc:name="Assert Response Payload"
+						doc:id="928f14f6-3984-4be8-8176-a3b645ac8c06"
+						expression="#[vars.reqres]"
+						is="#[MunitTools::equalTo(read(MunitTools::getResourceAsString('reqres-user-response.json'), 'application/json'))]"
+						message="Spy Failed - Response doesn't match" />
+				</munit-tools:after-call>
+			</munit-tools:spy>
 		</munit:behavior>
-		<munit:execution >
-			<munit:set-event doc:name="Set Payload and Query Param" doc:id="ccdab4c6-cfc4-443b-a5ab-ba7a40c13c08" >
-				<munit:payload value="#[output application/json --- read(MunitTools::getResourceAsString('reqres-user-request.json'),'application/json')]" />
-				<munit:attributes value="#[{queryParams:{statusCode:'200'}}]" />
+		<munit:execution>
+			<munit:set-event
+				doc:name="Set Payload and Query Param"
+				doc:id="ccdab4c6-cfc4-443b-a5ab-ba7a40c13c08">
+				<munit:payload
+					value="#[output application/json --- read(MunitTools::getResourceAsString('reqres-user-request.json'),'application/json')]" />
+				<munit:attributes
+					value="#[{queryParams:{statusCode:'200'}}]" />
 			</munit:set-event>
-			<flow-ref doc:name="mashup-flow" doc:id="f7039125-7a75-418a-b9c1-11ec68c59e27" name="mashup-flow"/>
+			<flow-ref doc:name="mashup-flow"
+				doc:id="f7039125-7a75-418a-b9c1-11ec68c59e27" name="mashup-flow" />
 		</munit:execution>
-		<munit:validation >
+		<munit:validation>
+			<munit-tools:verify-call
+				doc:name="Verify ReqRes"
+				doc:id="99f172d1-1faa-4478-9f5b-608808294dbb"
+				processor="http:request" times="1">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute
+						whereValue="9059b5ac-5b2e-4087-9ea6-003cd3877845"
+						attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify HttpBin" doc:id="94a5cc2c-3ede-499b-95ac-f55ba5084108" processor="http:request" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c7b3df16-0f4c-40cc-ac5e-a236f3b148ee" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Quotes" doc:id="fa4bda27-15a6-4ceb-8129-016c1354a786" processor="http:request" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d8da740f-b3b9-480d-9661-991bd7b41602" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
 			<munit-tools:assert-that doc:name="Assert that Payload is NOT Null" doc:id="27d42290-1582-4106-a284-2cf0355e5261" expression="#[payload]" is="#[MunitTools::notNullValue()]" message="Payload is null"/>
 			<munit-tools:assert-that doc:name="Assert that Payload Name field is Concatanated" doc:id="d0966f6e-0b55-45c0-8456-b32f4b723a0d" expression="#[payload.name]" is="#[MunitTools::equalTo('Chuck Norris')]" message="Payload name is not properly concatanated as expected"/>
 			<munit-tools:assert-that doc:name="Assert Mashup Response" doc:id="f58d24c5-6127-476f-9bf7-ff1646db8481" is="#[MunitTools::equalTo(read(MunitTools::getResourceAsString('mashup-response.json'),'application/json'))]" expression="#[payload]" message="Assertion failed in mashup response"/>
